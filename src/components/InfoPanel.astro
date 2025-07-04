@@ -1,9 +1,14 @@
 ---
+import CountdownTimer from './CountdownTimer.astro';
+
 export interface Props {
   isOpen?: boolean;
 }
 
 const { isOpen = false } = Astro.props;
+
+// Set the event date - December 25, 2024 at 6:00 PM
+const eventDate = import.meta.env.COUNTDOWN_TARGET_DATE 
 ---
 
 <!-- Info Panel -->
@@ -15,7 +20,7 @@ const { isOpen = false } = Astro.props;
   <div class="info-panel-backdrop fixed inset-0 bg-black/50"></div>
   
   <!-- Panel content -->
-  <div class="info-panel-content relative bg-black/90 backdrop-blur-md shadow-2xl">
+  <div class="info-panel-content relative bg-black/30 backdrop-blur-md shadow-2xl">
     <!-- Close button -->
     <button 
       class="info-panel-close absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 active:scale-95"
@@ -27,38 +32,15 @@ const { isOpen = false } = Astro.props;
     </button>
     
     <!-- Panel header -->
-    <div class="px-6 pt-6 pb-4">
-      <h2 class="text-3xl font-display font-bold text-white">Event Information</h2>
-      <p class="text-sm text-gray-400 mt-1">Everything you need to know</p>
+    <div class="px-6 pt-6 pb-4 ">
+      <h2 class="text-3xl font-display font-bold text-white">Useful Information</h2>
+      <p class="text-sm text-gray-400 mt-1">Almost everything you need to know</p>
     </div>
     
     <!-- Scrollable content area -->
-    <div class="px-6 pb-6 max-h-[80vh] overflow-y-auto">
-      <!-- Event Details Section -->
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
-          <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-          Event Details
-        </h3>
-        <div class="space-y-3 text-gray-300">
-          <div>
-            <span class="font-medium text-purple-400">Date:</span> December 25, 2024
-          </div>
-          <div>
-            <span class="font-medium text-purple-400">Time:</span> 6:00 PM - Midnight
-          </div>
-          <div>
-            <span class="font-medium text-purple-400">Location:</span> Throughout the City
-          </div>
-          <div>
-            <span class="font-medium text-purple-400">Duration:</span> 6 Hours of Adventure
-          </div>
-        </div>
-      </section>
-      
-      <!-- Teams Section -->
+    <div class="px-6 pb-6 max-h-[80dvh] overflow-y-scroll">
+
+          <!-- Teams Section -->
       <section class="mb-8">
         <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
           <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,23 +49,62 @@ const { isOpen = false } = Astro.props;
           Teams
         </h3>
         <div class="grid grid-cols-2 gap-4">
-          <div class="bg-purple-900/30 rounded-lg p-3 border border-purple-700/50">
-            <h4 class="font-medium text-purple-300">Team Alpha</h4>
-            <p class="text-sm text-gray-400">2-4 members</p>
-          </div>
-          <div class="bg-pink-900/30 rounded-lg p-3 border border-pink-700/50">
-            <h4 class="font-medium text-pink-300">Team Beta</h4>
-            <p class="text-sm text-gray-400">2-4 members</p>
-          </div>
-          <div class="bg-blue-900/30 rounded-lg p-3 border border-blue-700/50">
-            <h4 class="font-medium text-blue-300">Team Gamma</h4>
-            <p class="text-sm text-gray-400">2-4 members</p>
-          </div>
-          <div class="bg-green-900/30 rounded-lg p-3 border border-green-700/50">
-            <h4 class="font-medium text-green-300">Team Delta</h4>
-            <p class="text-sm text-gray-400">2-4 members</p>
-          </div>
+          <button 
+            class="team-selector bg-purple-900/30 rounded-lg p-3 border border-purple-700/50 hover:bg-purple-900/50 transition-colors cursor-pointer relative"
+            data-team="purple"
+          >
+            <h4 class="font-medium text-purple-300 text-center">Purple Team</h4>
+            <div class="team-selected-indicator hidden absolute top-1 right-1">
+              <svg class="w-4 h-4 text-purple-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </button>
+          <button 
+            class="team-selector bg-pink-900/30 rounded-lg p-3 border border-pink-700/50 hover:bg-pink-900/50 transition-colors cursor-pointer relative"
+            data-team="red"
+          >
+            <h4 class="font-medium text-pink-300 text-center">Red Team</h4>
+            <div class="team-selected-indicator hidden absolute top-1 right-1">
+              <svg class="w-4 h-4 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </button>
+          <button 
+            class="team-selector bg-blue-900/30 rounded-lg p-3 border border-blue-700/50 hover:bg-blue-900/50 transition-colors cursor-pointer relative"
+            data-team="blue"
+          >
+            <h4 class="font-medium text-blue-300 text-center">Blue Team</h4>
+            <div class="team-selected-indicator hidden absolute top-1 right-1">
+              <svg class="w-4 h-4 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </button>
+          <button 
+            class="team-selector bg-green-900/30 rounded-lg p-3 border border-green-700/50 hover:bg-green-900/50 transition-colors cursor-pointer relative"
+            data-team="green"
+          >
+            <h4 class="font-medium text-green-300 text-center">Green Team</h4>
+            <div class="team-selected-indicator hidden absolute top-1 right-1">
+              <svg class="w-4 h-4 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </button>
         </div>
+      </section>
+
+      <!-- Countdown Timer Section -->
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Ready for some good clean fun?
+        </h3>
+        <CountdownTimer targetDate={eventDate} />
       </section>
       
       <!-- Rules Section -->
@@ -92,16 +113,38 @@ const { isOpen = false } = Astro.props;
           <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
           </svg>
-          Rules & Guidelines
+          How to win
         </h3>
         <ol class="list-decimal list-inside space-y-2 text-gray-300">
-          <li>Complete tasks in any order you prefer</li>
+          <li>Select your team colour above</li>
           <li>Take photos as proof of completion</li>
-          <li>Respect all locations and people</li>
-          <li>Stay within designated boundaries</li>
-          <li>Work as a team - no splitting up</li>
-          <li>Have fun and be creative!</li>
+          <li>Get back to base before the timer runs out</li>
+          <li>Last team back will have a forfeit</li>
         </ol>
+      </section>
+
+      <!-- Meeting Point Section -->
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          Meeting Point
+        </h3>
+        
+        <!-- Map Container -->
+        <div class="relative overflow-hidden rounded-lg border border-white/20 bg-black/40">
+          <!-- Google Maps Container -->
+          <div id="meeting-point-map" class="w-full h-[250px]"></div>
+          
+          <!-- Overlay with coordinates -->
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
+            <p class="text-white font-mono text-sm">55.2058° N, 6.6563° W</p>
+            <p class="text-gray-400 text-xs mt-1">Beside Babushka</p>
+          </div>
+        </div>
+        
       </section>
       
       <!-- Contact Section -->
@@ -114,14 +157,14 @@ const { isOpen = false } = Astro.props;
         </h3>
         <div class="space-y-3">
           <div class="bg-white/5 rounded-lg p-4">
-            <p class="text-sm text-gray-400 mb-1">Event Coordinator</p>
-            <p class="font-medium text-white">Danny Williams</p>
-            <a href="tel:+1234567890" class="text-purple-400 hover:text-purple-300 transition-colors">+1 (234) 567-890</a>
+            <p class="text-sm text-gray-400 mb-1">Any questions?</p>
+            <p class="font-medium text-white">Phone Matt</p>
+            <a href="tel:+447940959177" class="text-purple-400 hover:text-purple-300 transition-colors">07940 959177</a>
           </div>
           <div class="bg-red-900/20 rounded-lg p-4 border border-red-700/50">
-            <p class="text-sm text-red-400 mb-1">Emergency Contact</p>
-            <p class="font-medium text-white">Emergency Services: 911</p>
-            <p class="text-sm text-gray-400 mt-1">Event Safety: +1 (234) 567-999</p>
+            <p class="text-sm text-red-400 mb-1">For actual emergencies</p>
+            <p class="font-medium text-white">Alan's your man</p>
+            <a href="tel:+447542657103" class="text-sm text-gray-400 mt-1">07542 657103</p>
           </div>
         </div>
       </section>
@@ -149,4 +192,249 @@ const { isOpen = false } = Astro.props;
     border-radius: 3px;
   }
   
+  /* Leaflet map styles */
+  #meeting-point-map {
+    background: #1a1a1a;
+  }
+  
+  /* Dark theme for Leaflet controls */
+  #meeting-point-map .leaflet-control-zoom a,
+  #meeting-point-map .leaflet-control-attribution {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  #meeting-point-map .leaflet-control-zoom a:hover {
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  /* Remove default Leaflet styles that conflict with dark theme */
+  #meeting-point-map .leaflet-container {
+    background: #1a1a1a;
+  }
+  
+  /* Custom popup styles */
+  .leaflet-popup-content-wrapper {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .leaflet-popup-tip {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  .leaflet-popup-content {
+    margin: 12px !important;
+    min-width: 200px;
+  }
+  
+  /* Ensure Tailwind styles work in popup */
+  .leaflet-popup-content p {
+    margin: 0;
+  }
 </style>
+
+<script>
+  // Import Leaflet
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+  
+  // Initialize map when the panel opens
+  let mapInitialized = false;
+  let map: L.Map | null = null;
+  
+  function initializeMeetingPointMap() {
+    if (mapInitialized || !document.getElementById('meeting-point-map')) return;
+    
+    try {
+      // Meeting point coordinates
+      const meetingPoint: L.LatLngExpression = [55.2058, -6.6563];
+      
+      // Create the map with dark theme
+      map = L.map('meeting-point-map', {
+        center: meetingPoint,
+        zoom: 15,
+        zoomControl: true,
+        attributionControl: false
+      });
+      
+      // Add dark-themed tile layer using CartoDB dark theme
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+      
+      // Create custom icon for the marker
+      const customIcon = L.divIcon({
+        className: 'custom-marker',
+        html: `
+          <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+        `,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32]
+      });
+      
+      // Add marker at the meeting point
+      const marker = L.marker(meetingPoint, { icon: customIcon })
+        .addTo(map);
+      
+      // Create popup with Google Maps link
+      const popupContent = `
+        <div class="text-center">
+          <p class="font-semibold mb-2">Danny's Stag Meeting Point</p>
+          <p class="text-sm text-gray-600 mb-3">55.2058° N, 6.6563° W</p>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=55.2058,-6.6563" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
+            </svg>
+            Open in Google Maps
+          </a>
+        </div>
+      `;
+      
+      marker.bindPopup(popupContent, {
+        maxWidth: 250,
+        className: 'custom-popup'
+      });
+      
+      mapInitialized = true;
+      
+      // Force a resize when map is shown
+      setTimeout(() => {
+        map?.invalidateSize();
+      }, 400);
+      
+    } catch (error) {
+      console.error('Error initializing Leaflet map:', error);
+      const mapContainer = document.getElementById('meeting-point-map');
+      if (mapContainer) {
+        mapContainer.innerHTML = `
+          <div class="flex items-center justify-center h-full bg-black/60">
+            <p class="text-gray-400">Map loading failed</p>
+          </div>
+        `;
+      }
+    }
+  }
+  
+  // Watch for panel open state changes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-panel-open') {
+        const panel = mutation.target as HTMLElement;
+        if (panel.getAttribute('data-panel-open') === 'true') {
+          // Initialize map when panel opens
+          setTimeout(() => initializeMeetingPointMap(), 300);
+        }
+      }
+    });
+  });
+  
+  // Start observing the info panel
+  document.addEventListener('DOMContentLoaded', () => {
+    const infoPanel = document.querySelector('.info-panel');
+    if (infoPanel) {
+      observer.observe(infoPanel, { attributes: true });
+    }
+  });
+
+  // Team selection handling
+  document.addEventListener('DOMContentLoaded', () => {
+    const teamSelectors = document.querySelectorAll('.team-selector');
+    const indicators = document.querySelectorAll('.team-selected-indicator');
+    
+    // Team-specific task orders
+    const teamTaskOrders: Record<string, number[]> = {
+      purple: [1, 2, 3, 4, 5],  // Default order
+      red: [3, 1, 4, 2, 5],     // Different order for red team
+      blue: [2, 4, 1, 5, 3],    // Different order for blue team
+      green: [5, 3, 2, 1, 4]    // Different order for green team
+    };
+    
+    // Get selected team from URL or default
+    function getSelectedTeam(): string {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('team') || 'purple';
+    }
+    
+    // Update URL with selected team
+    function updateURL(team: string) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('team', team);
+      window.history.replaceState({}, '', url.toString());
+    }
+    
+    // Update task order based on team selection
+    function updateTaskOrder(team: string) {
+      const order = teamTaskOrders[team] || teamTaskOrders.purple;
+      
+      // Dispatch custom event to notify index page about order change
+      window.dispatchEvent(new CustomEvent('teamSelected', { 
+        detail: { team, order } 
+      }));
+    }
+    
+    // Update visual selection
+    function updateSelection(selectedTeam: string) {
+      // Hide all indicators
+      indicators.forEach(indicator => indicator.classList.add('hidden'));
+      
+      // Remove selected state from all teams
+      teamSelectors.forEach(selector => {
+        selector.classList.remove('ring-2', 'ring-offset-2', 'ring-offset-black');
+      });
+      
+      // Show selected team indicator
+      const selectedButton = document.querySelector(`[data-team="${selectedTeam}"]`);
+      if (selectedButton) {
+        const indicator = selectedButton.querySelector('.team-selected-indicator');
+        if (indicator) indicator.classList.remove('hidden');
+        selectedButton.classList.add('ring-2', 'ring-offset-2', 'ring-offset-black');
+        
+        // Add team-specific ring color
+        selectedButton.classList.remove('ring-purple-500', 'ring-pink-500', 'ring-blue-500', 'ring-green-500');
+        const ringColors: Record<string, string> = {
+          purple: 'ring-purple-500',
+          red: 'ring-pink-500',
+          blue: 'ring-blue-500',
+          green: 'ring-green-500'
+        };
+        selectedButton.classList.add(ringColors[selectedTeam] || 'ring-purple-500');
+      }
+      
+      // Update task order
+      updateTaskOrder(selectedTeam);
+    }
+    
+    // Initialize with current selection
+    const currentTeam = getSelectedTeam();
+    updateSelection(currentTeam);
+    
+    // Handle team selection clicks
+    teamSelectors.forEach(selector => {
+      selector.addEventListener('click', () => {
+        const team = selector.getAttribute('data-team') || 'purple';
+        updateURL(team);
+        updateSelection(team);
+        
+        // Haptic feedback if available
+        if ('vibrate' in navigator) {
+          navigator.vibrate(10);
+        }
+      });
+    });
+  });
+</script>

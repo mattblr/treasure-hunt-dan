@@ -1,0 +1,235 @@
+---
+export interface Props {
+  targetDate: string;
+}
+
+const { targetDate } = Astro.props;
+
+const taskMessages = [
+  "Task 1 has started - hurry up!",
+  "Now we're on to Task 2, let's go!",
+  "Task 3 is live - vamos!",
+  "Task 4 time - it's all to play for!",
+  "Final task! Send it!"
+];
+---
+
+<div class="countdown-timer" data-target-date={targetDate}>
+  <!-- Timer Display -->
+  <div class="timer-display">
+    <!-- Countdown before event -->
+    <div class="countdown-section">
+      <div class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+        <!-- Days -->
+        <div class="timer-unit relative">
+          <div class="timer-value bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+            <div class="timer-number text-3xl sm:text-4xl font-bold text-white" data-unit="days">00</div>
+            <div class="timer-label text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-1">Days</div>
+          </div>
+        </div>
+        
+        <!-- Hours -->
+        <div class="timer-unit relative">
+          <div class="timer-value bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+            <div class="timer-number text-3xl sm:text-4xl font-bold text-white" data-unit="hours">00</div>
+            <div class="timer-label text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-1">Hours</div>
+          </div>
+        </div>
+        
+        <!-- Minutes -->
+        <div class="timer-unit relative">
+          <div class="timer-value bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+            <div class="timer-number text-3xl sm:text-4xl font-bold text-white" data-unit="minutes">00</div>
+            <div class="timer-label text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-1">Mins</div>
+          </div>
+        </div>
+        
+        <!-- Seconds -->
+        <div class="timer-unit relative">
+          <div class="timer-value bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+            <div class="timer-number text-3xl sm:text-4xl font-bold text-white" data-unit="seconds">00</div>
+            <div class="timer-label text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-1">Secs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Task Message (hidden by default) -->
+    <div class="task-message hidden text-center">
+      <div class="bg-white/10 backdrop-blur-md rounded-3xl px-6 py-4 border border-white/20 inline-block">
+        <p class="text-xl sm:text-2xl font-bold text-white task-text">Task 1 has started - hurry up! 🍺</p>
+        <p class="text-sm text-gray-300 mt-2">
+          Time remaining: <span class="task-time-remaining font-mono">25:00</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const taskMessages = [
+  "Task 1 has started - hurry up!",
+  "Now we're on to Task 2, let's go!",
+  "Task 3 is live - vamos!",
+  "Task 4 time - it's all to play for!",
+  "Final task! Send it!"
+    ];
+    
+    class CountdownTimer {
+      constructor(element) {
+        this.element = element;
+        this.targetDate = new Date(element.dataset.targetDate || '');
+        this.intervalId = null;
+        this.taskDuration = 25 * 60 * 1000; // 25 minutes in milliseconds
+        
+        this.daysEl = element.querySelector('[data-unit="days"]');
+        this.hoursEl = element.querySelector('[data-unit="hours"]');
+        this.minutesEl = element.querySelector('[data-unit="minutes"]');
+        this.secondsEl = element.querySelector('[data-unit="seconds"]');
+        this.countdownSection = element.querySelector('.countdown-section');
+        this.taskMessage = element.querySelector('.task-message');
+        this.taskText = element.querySelector('.task-text');
+        this.taskTimeRemaining = element.querySelector('.task-time-remaining');
+        
+        this.init();
+      }
+      
+      init() {
+        if (isNaN(this.targetDate.getTime())) {
+          console.error('Invalid target date for countdown timer');
+          return;
+        }
+        
+        this.update();
+        this.intervalId = setInterval(() => this.update(), 1000);
+      }
+      
+      update() {
+        const now = new Date().getTime();
+        const distance = this.targetDate.getTime() - now;
+        
+        if (distance > 0) {
+          // Event hasn't started yet - show countdown
+          this.showCountdown(distance);
+        } else {
+          // Event has started - show task messages
+          this.showTaskMessage(Math.abs(distance));
+        }
+      }
+      
+      showCountdown(distance) {
+        // Show countdown section, hide task message
+        if (this.countdownSection) this.countdownSection.classList.remove('hidden');
+        if (this.taskMessage) this.taskMessage.classList.add('hidden');
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        this.updateUnit(this.daysEl, days);
+        this.updateUnit(this.hoursEl, hours);
+        this.updateUnit(this.minutesEl, minutes);
+        this.updateUnit(this.secondsEl, seconds);
+      }
+      
+      showTaskMessage(timeSinceStart) {
+        // Hide countdown section, show task message
+        if (this.countdownSection) this.countdownSection.classList.add('hidden');
+        if (this.taskMessage) this.taskMessage.classList.remove('hidden');
+        
+        // Calculate which task we're on (0-indexed)
+        const currentTaskIndex = Math.floor(timeSinceStart / this.taskDuration);
+        
+        if (currentTaskIndex >= taskMessages.length) {
+          // All tasks completed
+          if (this.taskText) this.taskText.textContent = "All tasks complete! Time to celebrate! 🎉";
+          if (this.taskTimeRemaining) this.taskTimeRemaining.parentElement.classList.add('hidden');
+        } else {
+          // Show current task message
+          if (this.taskText) this.taskText.textContent = taskMessages[currentTaskIndex];
+          
+          // Calculate time remaining in current task
+          const timeInCurrentTask = timeSinceStart % this.taskDuration;
+          const timeRemaining = this.taskDuration - timeInCurrentTask;
+          const minutesRemaining = Math.floor(timeRemaining / (60 * 1000));
+          const secondsRemaining = Math.floor((timeRemaining % (60 * 1000)) / 1000);
+          
+          if (this.taskTimeRemaining) {
+            this.taskTimeRemaining.textContent = `${minutesRemaining}:${String(secondsRemaining).padStart(2, '0')}`;
+          }
+        }
+      }
+      
+      updateUnit(element, value) {
+        if (!element) return;
+        
+        const newValue = String(value).padStart(2, '0');
+        const oldValue = element.textContent;
+        
+        if (newValue !== oldValue) {
+          element.classList.add('timer-flip');
+          element.textContent = newValue;
+          
+          setTimeout(() => {
+            element.classList.remove('timer-flip');
+          }, 300);
+        }
+      }
+      
+      destroy() {
+        if (this.intervalId) {
+          clearInterval(this.intervalId);
+        }
+      }
+    }
+    
+    // Initialize all countdown timers on the page
+    const timers = document.querySelectorAll('.countdown-timer');
+    console.log('Found countdown timers:', timers.length);
+    timers.forEach(timer => {
+      console.log('Initializing timer with date:', timer.dataset.targetDate);
+      new CountdownTimer(timer);
+    });
+  });
+</script>
+
+<style>
+  /* Flip animation for number changes */
+  .timer-number {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .timer-number.timer-flip {
+    animation: flipNumber 0.3s ease-in-out;
+  }
+  
+  @keyframes flipNumber {
+    0% {
+      transform: rotateX(0deg);
+    }
+    50% {
+      transform: rotateX(90deg);
+    }
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+  
+  /* Fade animation for task messages */
+  .task-message {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

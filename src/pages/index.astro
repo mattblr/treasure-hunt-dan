@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TaskCard from '../components/TaskCard.astro';
 import InfoPanel from '../components/InfoPanel.astro';
+import CountdownTimer from '../components/CountdownTimer.astro';
 
 // Sample task data with video backgrounds
 const videoUrl = "https://res.cloudinary.com/mattblr/video/upload/f_auto,q_auto,c_fill/v1751665113/danny-stag/IMG_7031_z8g4tr.mov";
@@ -9,43 +10,42 @@ const videoUrl = "https://res.cloudinary.com/mattblr/video/upload/f_auto,q_auto,
 const tasks = [
   {
     number: 1,
-    title: "Beer Pong Championship",
-    description: "Show your skills in the ultimate beer pong tournament",
-    action: "Sink 10 cups in a row",
-    videoUrl: videoUrl
+    title: "Baristas Paradise",
+    description: "Convince a coffee shop to let you make a latte",
+    action: "Bonus points for the best latte art",
+    videoUrl: 'https://res.cloudinary.com/mattblr/video/upload/v1751665127/danny-stag/IMG_1839_d6urti.mov'
   },
   {
     number: 2,
-    title: "Karaoke Challenge",
-    description: "Belt out Danny's favorite songs",
-    action: "Perform 3 songs without laughing",
-    videoUrl: videoUrl
+    title: "Whole In One",
+    description: "Take a swing, steal a golf cart or just get as close as possible to a flag on a golf course",
+    action: "Win a round for your team if you can <i>actually</i> get a hole in one",
+    videoUrl: 'https://res.cloudinary.com/mattblr/video/upload/v1751665116/danny-stag/AF874BA0-AC5E-4230-83F9-B410807E27D6_jkvied.mov'
   },
   {
     number: 3,
-    title: "Shot Roulette",
-    description: "Spin the wheel and take your chances",
-    action: "Complete the mystery shot challenge",
-    videoUrl: videoUrl
-  },
+    title: "Do A Runner",
+    description: "You've got 25 minutes to get as far away from the meeting point as possible",
+    action: "Don't forget you have to get back before the timer runs out!",
+    videoUrl: 'https://res.cloudinary.com/mattblr/video/upload/v1751665123/danny-stag/IMG_0841_eebs2r.mov',},
   {
     number: 4,
     title: "Dance Battle",
-    description: "Show off your best moves on the dance floor",
-    action: "Win a dance-off against the groom",
-    videoUrl: videoUrl
+    description: "No one has moves as good as the groom, but try anyway",
+    action: "Pop your best moves on video, background music heavily encouraged",
+    videoUrl: 'https://res.cloudinary.com/mattblr/video/upload/v1751665138/danny-stag/IMG_6293_fgroli.mov'
   },
   {
     number: 5,
-    title: "Pub Golf",
-    description: "9 holes, 9 pubs, 9 drinks",
-    action: "Complete the course under par",
-    videoUrl: videoUrl
+    title: "Beg Borrow Steal",
+    description: "Best item brought back wins a special prize",
+    action: "Acquire by any means necessary...",
+    videoUrl: 'https://res.cloudinary.com/mattblr/video/upload/v1751665139/danny-stag/IMG_1846_jkcktr.mov'
   }
 ];
 ---
 
-<BaseLayout title="Danny's Tasks">
+<BaseLayout title="Danny's Stag" description="A fun treasure hunt and task challenge for Danny's stag do!">
 	<!-- Info Panel -->
 	<InfoPanel />
 	
@@ -60,7 +60,7 @@ const tasks = [
 	</button>
 	
 	<!-- Hero Section -->
-	<section class="hero-section relative w-full h-[400vh] bg-black">
+	<section class="hero-section relative w-full h-[400dvh] bg-black">
 		<!-- Video Background -->
 		<div class="hero-video-wrapper sticky top-0 w-full h-screen overflow-hidden">
 			<div class="hero-video-container absolute inset-0 w-full h-full">
@@ -82,9 +82,17 @@ const tasks = [
 			<!-- Hero Content -->
 			<div class="hero-content absolute inset-0 flex flex-col items-center justify-center px-6 py-12 text-center z-10">
 				<!-- Main Title -->
-				<h1 class="hero-title font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white tracking-wider">
+				<h1 class="hero-title font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white tracking-wider mb-8">
 					DANNY'S STAG
 				</h1>
+				<h2 class="hero-text text-md sm:text-md md:text-8xl font-bold text-white mb-8">
+					Treasure huntin' and task doin'
+				</h2>
+				
+				<!-- Countdown Timer -->
+				<div class="hero-countdown">
+					<CountdownTimer targetDate={import.meta.env.COUNTDOWN_TARGET_DATE} />
+				</div>
 				
 				<!-- Scroll Indicator -->
 				<div class="scroll-indicator absolute bottom-8 left-1/2 transform -translate-x-1/2">
@@ -124,8 +132,8 @@ const tasks = [
 						<div class="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
 							<!-- Task Number -->
 							<div class="task-number opacity-0">
-								<span class="text-8xl font-bold text-white/20">
-									{String(task.number).padStart(2, '0')}
+								<span class="text-8xl font-bold text-white/20 task-number-text">
+									{String(index + 1).padStart(2, '0')}
 								</span>
 							</div>
 							
@@ -135,15 +143,11 @@ const tasks = [
 							</h2>
 							
 							<!-- Task Description -->
-							<p class="task-description text-lg text-white/80 mb-8 max-w-md opacity-0">
-								{task.description}
-							</p>
+							<p class="task-description text-lg text-white/80 mb-8 max-w-md opacity-0" set:html={task.description}/>
 							
 							<!-- Action Item -->
 							<div class="task-action bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 opacity-0">
-								<p class="text-white font-medium">
-									👉 {task.action}
-								</p>
+								<p class="text-white font-medium" set:html={task.action}/>
 							</div>
 						</div>
 					</div>
@@ -247,6 +251,28 @@ const tasks = [
 				duration: 1.5,
 				ease: 'power2.out'
 			}, '-=1.5')
+			.fromTo('.hero-countdown', 
+				{
+					opacity: 0,
+					y: 30
+				},
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.8,
+					ease: 'power2.out'
+				}, '-=0.8')
+				.fromTo('.hero-text', 
+				{
+					opacity: 0,
+					y: -30
+				},
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.8,
+					ease: 'power2.out'
+				}, '-=0.8')
 			.from('.scroll-indicator', {
 				opacity: 0,
 				y: -10,
@@ -282,6 +308,31 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '40% top',
+				scrub: 1
+			}
+		});
+		
+		// Countdown timer parallax - fades out on scroll
+		gsap.to('.hero-countdown', {
+			opacity: 0,
+			y: 50,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: '.hero-section',
+				start: 'top top',
+				end: '30% top',
+				scrub: 1
+			}
+		});
+
+			gsap.to('.hero-text', {
+			opacity: 0,
+			y: -50,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: '.hero-section',
+				start: 'top top',
+				end: '30% top',
 				scrub: 1
 			}
 		});
@@ -343,6 +394,7 @@ const tasks = [
 		let currentX = 0;
 		let isDragging = false;
 		let startTime = 0;
+		let currentTaskOrder = [0, 1, 2, 3, 4]; // Default order (0-indexed)
 		
 		// Touch event handlers
 		function handleTouchStart(e: TouchEvent) {
@@ -352,7 +404,8 @@ const tasks = [
 			startTime = Date.now();
 			
 			// Add dragging class to current slide
-			slides[currentIndex].classList.add('dragging');
+			const currentPhysicalIndex = currentTaskOrder[currentIndex];
+			slides[currentPhysicalIndex].classList.add('dragging');
 		}
 		
 		function handleTouchMove(e: TouchEvent) {
@@ -363,7 +416,8 @@ const tasks = [
 			const diff = currentX - startX;
 			
 			// Update current slide position
-			const currentSlide = slides[currentIndex];
+			const currentPhysicalIndex = currentTaskOrder[currentIndex];
+			const currentSlide = slides[currentPhysicalIndex];
 			gsap.set(currentSlide, {
 				x: diff,
 				ease: 'none'
@@ -372,14 +426,16 @@ const tasks = [
 			// Show peek of adjacent slides
 			if (diff > 0 && currentIndex > 0) {
 				// Swiping right, show previous slide
-				const prevSlide = slides[currentIndex - 1];
+				const prevPhysicalIndex = currentTaskOrder[currentIndex - 1];
+				const prevSlide = slides[prevPhysicalIndex];
 				gsap.set(prevSlide, {
 					x: diff - window.innerWidth,
 					ease: 'none'
 				});
-			} else if (diff < 0 && currentIndex < slides.length - 1) {
+			} else if (diff < 0 && currentIndex < currentTaskOrder.length - 1) {
 				// Swiping left, show next slide
-				const nextSlide = slides[currentIndex + 1];
+				const nextPhysicalIndex = currentTaskOrder[currentIndex + 1];
+				const nextSlide = slides[nextPhysicalIndex];
 				gsap.set(nextSlide, {
 					x: diff + window.innerWidth,
 					ease: 'none'
@@ -396,14 +452,15 @@ const tasks = [
 			const threshold = window.innerWidth * 0.3; // 30% of screen width
 			
 			// Remove dragging class
-			slides[currentIndex].classList.remove('dragging');
+			const currentPhysicalIndex = currentTaskOrder[currentIndex];
+			slides[currentPhysicalIndex].classList.remove('dragging');
 			
 			// Determine if we should change slides
 			if (Math.abs(diff) > threshold || Math.abs(velocity) > 0.5) {
 				if (diff > 0 && currentIndex > 0) {
 					// Swipe right - go to previous slide
 					navigateToSlide(currentIndex - 1);
-				} else if (diff < 0 && currentIndex < slides.length - 1) {
+				} else if (diff < 0 && currentIndex < currentTaskOrder.length - 1) {
 					// Swipe left - go to next slide
 					navigateToSlide(currentIndex + 1);
 				} else {
@@ -417,14 +474,19 @@ const tasks = [
 		}
 		
 		function navigateToSlide(newIndex: number) {
+			// Get physical indices for current and new positions
+			const currentPhysicalIndex = currentTaskOrder[currentIndex];
+			const newPhysicalIndex = currentTaskOrder[newIndex];
+			
 			// Stop current video
-			if (videos[currentIndex]) {
-				(videos[currentIndex] as HTMLVideoElement).pause();
+			if (videos[currentPhysicalIndex]) {
+				(videos[currentPhysicalIndex] as HTMLVideoElement).pause();
 			}
 			
-			// Animate slides
-			slides.forEach((slide, index) => {
-				const offset = (index - newIndex) * 100;
+			// Animate slides based on logical order
+			slides.forEach((slide, physicalIndex) => {
+				const logicalIndex = currentTaskOrder.indexOf(physicalIndex);
+				const offset = (logicalIndex - newIndex) * 100;
 				gsap.to(slide, {
 					x: 0,
 					xPercent: offset,
@@ -441,15 +503,16 @@ const tasks = [
 			
 			// Play new video and animate content
 			currentIndex = newIndex;
-			if (videos[currentIndex]) {
-				(videos[currentIndex] as HTMLVideoElement).play().catch((e: Error) => console.log('Video play failed:', e));
+			if (videos[newPhysicalIndex]) {
+				(videos[newPhysicalIndex] as HTMLVideoElement).play().catch((e: Error) => console.log('Video play failed:', e));
 			}
-			animateTaskContent(currentIndex);
+			animateTaskContent(newIndex);
 		}
 		
 		function resetSlidePositions() {
-			slides.forEach((slide, index) => {
-				const offset = (index - currentIndex) * 100;
+			slides.forEach((slide, physicalIndex) => {
+				const logicalIndex = currentTaskOrder.indexOf(physicalIndex);
+				const offset = (logicalIndex - currentIndex) * 100;
 				gsap.to(slide, {
 					x: 0,
 					xPercent: offset,
@@ -461,7 +524,8 @@ const tasks = [
 		
 		// Animate task content when slide becomes active
 		function animateTaskContent(index: number) {
-			const slide = slides[index];
+			const physicalIndex = currentTaskOrder[index];
+			const slide = slides[physicalIndex];
 			if (!slide) return;
 			
 			const timeline = gsap.timeline();
@@ -505,6 +569,69 @@ const tasks = [
 		// Initialize slide positions and animate first content
 		resetSlidePositions();
 		animateTaskContent(0);
+		
+		// Function to reorder slides based on team selection
+		function reorderSlides(order: number[]) {
+			// Convert 1-indexed order to 0-indexed
+			currentTaskOrder = order.map(n => n - 1);
+			
+			// Reset to first slide
+			currentIndex = 0;
+			
+			// Update all slides positions and numbers based on new order
+			slides.forEach((slide, physicalIndex) => {
+				const logicalIndex = currentTaskOrder.indexOf(physicalIndex);
+				const offset = logicalIndex * 100;
+				gsap.set(slide, {
+					x: 0,
+					xPercent: offset,
+					duration: 0
+				});
+				
+				// Update the task number to show position in sequence
+				const taskNumberEl = slide.querySelector('.task-number-text');
+				if (taskNumberEl) {
+					taskNumberEl.textContent = String(logicalIndex + 1).padStart(2, '0');
+				}
+			});
+			
+			// Update dots
+			dots.forEach((dot, index) => {
+				dot.classList.remove('bg-white', 'w-6');
+				dot.classList.add('bg-white/40');
+			});
+			dots[0].classList.remove('bg-white/40');
+			dots[0].classList.add('bg-white', 'w-6');
+			
+			// Play first video in new order
+			videos.forEach(video => (video as HTMLVideoElement).pause());
+			const firstPhysicalIndex = currentTaskOrder[0];
+			if (videos[firstPhysicalIndex]) {
+				(videos[firstPhysicalIndex] as HTMLVideoElement).play().catch((e: Error) => console.log('Video play failed:', e));
+			}
+			animateTaskContent(0);
+		}
+		
+		// Listen for team selection events
+		window.addEventListener('teamSelected', ((event: CustomEvent) => {
+			const { order } = event.detail;
+			reorderSlides(order);
+		}) as EventListener);
+		
+		// Check URL for initial team selection
+		const params = new URLSearchParams(window.location.search);
+		const team = params.get('team');
+		if (team) {
+			// Team orders matching InfoPanel
+			const teamTaskOrders: Record<string, number[]> = {
+				purple: [1, 2, 3, 4, 5],
+				red: [3, 1, 4, 2, 5],
+				blue: [2, 4, 1, 5, 3],
+				green: [5, 3, 2, 1, 4]
+			};
+			const order = teamTaskOrders[team] || teamTaskOrders.purple;
+			reorderSlides(order);
+		}
 	}
 	
 	// Initialize Info Panel functionality
