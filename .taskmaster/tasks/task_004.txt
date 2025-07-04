@@ -1,0 +1,43 @@
+# Task ID: 4
+# Title: Implement Horizontal Card Swiping with Touch Gestures
+# Status: pending
+# Dependencies: 3
+# Priority: high
+# Description: Add swipe functionality for navigating between task cards with smooth GSAP transitions
+# Details:
+Implement touch gesture detection for horizontal swiping using JavaScript touch events (touchstart, touchmove, touchend). Create smooth card transitions with GSAP animations. Add progress dots showing current card position using Tailwind utilities. Implement swipe thresholds and momentum-based scrolling for natural feel. Use Tailwind's touch utilities for better mobile interactions.
+
+# Test Strategy:
+Test swipe gestures on various mobile devices, verify smooth transitions between cards, validate progress dots update correctly, ensure no accidental vertical scrolling
+
+# Subtasks:
+## 1. Set Up Touch Event Listeners and State Management [pending]
+### Dependencies: None
+### Description: Create the foundation for touch gesture detection by implementing event listeners and managing touch state
+### Details:
+Add touchstart, touchmove, and touchend event listeners to the card container. Create state variables to track touch start position, current position, and velocity. Implement a touch handler class or module that captures initial touch coordinates, tracks movement delta, and calculates swipe velocity. Use passive event listeners for better performance. Add touch-action CSS property to prevent default browser behaviors.
+
+## 2. Implement Card Positioning and Transform Logic [pending]
+### Dependencies: 4.1
+### Description: Create the core logic for positioning cards based on touch input and managing card stack layout
+### Details:
+Build a card manager that tracks current card index and calculates transform values for each card. Implement translateX calculations based on touch delta. Create a stacking system where inactive cards are slightly scaled down and offset. Use CSS transform3d for hardware acceleration. Implement bounds checking to prevent swiping beyond first/last card. Add data attributes to track card positions.
+
+## 3. Add GSAP Animation Integration for Smooth Transitions [pending]
+### Dependencies: 4.2
+### Description: Integrate GSAP to handle smooth card transitions during and after swipe gestures
+### Details:
+Create GSAP timelines for card enter/exit animations. Implement smooth transition animations using gsap.to() with appropriate easing (e.g., Power2.easeOut). Add momentum-based animations that continue movement based on swipe velocity. Create snap-to-card functionality that centers the nearest card after release. Implement interrupt handling to stop animations when new touch begins. Use GSAP's overwrite modes to prevent animation conflicts.
+
+## 4. Create Progress Indicator Dots with Active State [pending]
+### Dependencies: 4.2
+### Description: Build a visual progress indicator showing current card position using dots
+### Details:
+Create a dots container using Tailwind's flex utilities. Generate dot elements dynamically based on total card count. Style dots using Tailwind classes (w-2 h-2 rounded-full bg-gray-300). Implement active dot styling (bg-blue-500 scale-125). Add smooth transitions between dot states using Tailwind's transition utilities. Position dots container with fixed positioning at bottom of viewport. Update active dot on card change with proper accessibility attributes.
+
+## 5. Fine-tune Swipe Thresholds and User Experience [pending]
+### Dependencies: 4.3, 4.4
+### Description: Optimize the swipe interaction with proper thresholds, visual feedback, and edge case handling
+### Details:
+Implement minimum swipe distance threshold (e.g., 50px) to trigger card change. Add velocity threshold for quick flicks (e.g., 0.5px/ms). Create visual feedback during drag with slight rotation and opacity changes. Add haptic feedback on card change (if available). Implement rubber-band effect at first/last card using GSAP. Add keyboard navigation as fallback. Optimize for different screen sizes with responsive thresholds. Add touch-none utility class during animations to prevent interference.
+

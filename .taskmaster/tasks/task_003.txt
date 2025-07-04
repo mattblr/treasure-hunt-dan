@@ -1,0 +1,43 @@
+# Task ID: 3
+# Title: Create Task Card Components with Tailwind Styling
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Build 5 task cards with glassmorphism effects, stylized numbering, and proper mobile layout
+# Details:
+Create task card structure with Tailwind classes: bg-white/10 backdrop-blur-md rounded-3xl p-6. Implement stylized numbering with text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500. Add task titles, descriptions, and action items with proper typography hierarchy. Include map integration using Leaflet or image hints for each card.
+
+# Test Strategy:
+Validate all 5 cards display correctly, test glassmorphism effects render properly, verify text readability against background, confirm maps/images load correctly
+
+# Subtasks:
+## 1. Set up Tailwind configuration and create base card component structure [pending]
+### Dependencies: None
+### Description: Configure Tailwind CSS for glassmorphism effects and create the foundational React component for task cards with proper styling classes
+### Details:
+Install and configure Tailwind CSS if not already present. Create a TaskCard.jsx component with base structure using bg-white/10, backdrop-blur-md, rounded-3xl, and p-6 classes. Set up the component to accept props for task data (number, title, description, actions). Ensure the glassmorphism effect works properly with appropriate backdrop-filter support.
+
+## 2. Implement stylized task numbering with gradient effects [pending]
+### Dependencies: 3.1
+### Description: Add the large gradient numbers (1-5) to each card using Tailwind's text utilities and gradient backgrounds
+### Details:
+Within the TaskCard component, implement the task number display using text-6xl, font-bold, text-transparent, bg-clip-text, and bg-gradient-to-r from-pink-500 to-violet-500 classes. Position the number appropriately within the card layout. Create a prop to accept the task number and ensure it displays prominently.
+
+## 3. Add typography hierarchy for titles, descriptions, and action items [pending]
+### Dependencies: 3.2
+### Description: Implement the text content sections of the card with proper Tailwind typography classes for visual hierarchy
+### Details:
+Add title section with appropriate font size and weight (e.g., text-2xl font-semibold). Implement description area with readable text sizing and proper contrast against the glassmorphism background. Create an action items list with bullet points or checkboxes, ensuring good spacing and readability. Use Tailwind's text color utilities to ensure sufficient contrast.
+
+## 4. Integrate map hints or location imagery for each card [pending]
+### Dependencies: 3.3
+### Description: Add map integration using Leaflet or static map images to provide location context for each task
+### Details:
+Install react-leaflet if using interactive maps, or prepare static map images for each of the 5 tasks. Create a map container within each card that displays either a small interactive Leaflet map or a static image hint. Style the map container to fit well within the card design using appropriate Tailwind classes for sizing and borders. Ensure maps are responsive and don't break the card layout.
+
+## 5. Implement responsive mobile layout and create 5 unique task instances [pending]
+### Dependencies: 3.4
+### Description: Ensure cards are fully responsive on mobile devices and create 5 distinct task cards with unique content
+### Details:
+Apply responsive Tailwind classes to ensure cards stack properly on mobile (using grid or flex with appropriate breakpoints). Adjust padding, font sizes, and spacing for mobile views using Tailwind's responsive prefixes (sm:, md:, lg:). Create 5 unique task instances with different content, numbers, and map locations. Implement a container component that renders all 5 cards in a responsive grid layout.
+

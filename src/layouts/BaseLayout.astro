@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Danny's Mobile Task Manager" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <!-- Mobile viewport configuration for optimal mobile experience -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- PWA meta tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Theme color for browser chrome -->
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- Prevent zoom on form input focus -->
+    <meta name="format-detection" content="telephone=no" />
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+    
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    
+    <!-- Mobile-only detection script -->
+    <script>
+      // Check if user is on desktop and redirect if necessary
+      (function() {
+        // Skip redirect on desktop-notice page
+        if (window.location.pathname === '/desktop-notice') {
+          return;
+        }
+        
+        // Check if device is mobile based on viewport width and touch capability
+        const isMobile = () => {
+          const viewportWidth = window.innerWidth;
+          const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+          const userAgent = navigator.userAgent.toLowerCase();
+          
+          // Check for mobile user agents
+          const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+          const isMobileUserAgent = mobileRegex.test(userAgent);
+          
+          // Consider it mobile if viewport is <= 430px OR has touch AND mobile user agent
+          return viewportWidth <= 430 || (hasTouch && isMobileUserAgent);
+        };
+        
+        // Redirect desktop users
+        if (!isMobile()) {
+          window.location.href = '/desktop-notice';
+        }
+        
+        // Also check on resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            if (!isMobile() && window.location.pathname !== '/desktop-notice') {
+              window.location.href = '/desktop-notice';
+            }
+          }, 250);
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* Reset and base styles for mobile */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #000;
+    color: #fff;
+    touch-action: manipulation; /* Prevent double-tap zoom */
+  }
+  
+  /* Prevent text selection on mobile */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection for input fields */
+  input,
+  textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+</style>

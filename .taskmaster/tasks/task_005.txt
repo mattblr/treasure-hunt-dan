@@ -1,0 +1,43 @@
+# Task ID: 5
+# Title: Build Sliding Info Panel with GSAP Animations
+# Status: pending
+# Dependencies: 2
+# Priority: medium
+# Description: Create info panel that slides down from top containing event details, teams, rules, and contact info
+# Details:
+Build info panel using Tailwind's backdrop and overlay utilities with backdrop-blur effects. Implement slide-down animation from top using GSAP with smooth easing. Include event date, teams list, rules, and contact info with proper Tailwind typography. Add touch-friendly close button with hover/active states. Use fixed positioning and proper z-index management.
+
+# Test Strategy:
+Test panel slides smoothly from top, verify backdrop blur effects work correctly, validate touch interactions on close button, ensure content is readable and properly formatted
+
+# Subtasks:
+## 1. Create Info Panel Component Structure [pending]
+### Dependencies: None
+### Description: Build the foundational React component for the info panel with proper HTML structure and Tailwind classes for styling
+### Details:
+Create InfoPanel.jsx component with fixed positioning at top of viewport. Structure content sections for event details, teams, rules, and contact info using semantic HTML. Apply Tailwind classes for backdrop-blur-md, bg-white/90 (or dark variant), shadow-2xl, and proper spacing with p-6 or p-8. Set initial transform: translateY(-100%) to position panel off-screen.
+
+## 2. Implement GSAP Slide Animation Logic [pending]
+### Dependencies: 5.1
+### Description: Set up GSAP animation timeline for smooth slide-down and slide-up animations with proper easing
+### Details:
+Install GSAP if needed. Create useEffect hook with GSAP timeline for panel animation. Implement slideDown animation: gsap.to() with duration: 0.6, ease: 'power3.out', y: 0. Implement slideUp animation: gsap.to() with duration: 0.4, ease: 'power3.in', y: '-100%'. Add autoAlpha for smooth opacity transitions. Use useRef to target panel element.
+
+## 3. Design Content Layout with Tailwind Typography [pending]
+### Dependencies: 5.1
+### Description: Style all content sections with consistent Tailwind typography and responsive layout
+### Details:
+Apply Tailwind typography classes: text-3xl font-bold for main title, text-xl font-semibold for section headers, text-base for body content. Create grid or flex layout for teams display. Style rules as ordered list with list-decimal and proper spacing. Format contact info with appropriate text sizes and colors. Ensure responsive design with sm:, md:, lg: breakpoints.
+
+## 4. Build Touch-Friendly Close Button [pending]
+### Dependencies: 5.1
+### Description: Create an accessible close button with proper touch targets and visual feedback
+### Details:
+Position close button using absolute top-4 right-4. Apply min touch target size of 44x44px using p-2 with 24x24 icon. Style with Tailwind: rounded-full, bg-gray-100 hover:bg-gray-200, transition-colors duration-200. Add active:scale-95 for press feedback. Implement onClick handler to trigger slideUp animation. Include aria-label='Close panel' for accessibility.
+
+## 5. Handle Z-Index and Animation State Management [pending]
+### Dependencies: 5.2, 5.4
+### Description: Properly manage z-index layering and component state for smooth open/close functionality
+### Details:
+Set z-index using Tailwind's z-50 class to ensure panel appears above other content. Create isOpen state with useState hook. Implement open/close methods that update state and trigger GSAP animations. Add overlay backdrop with fixed inset-0 bg-black/50 that also closes panel on click. Ensure panel unmounts after close animation completes using onComplete callback. Handle escape key press for keyboard accessibility.
+

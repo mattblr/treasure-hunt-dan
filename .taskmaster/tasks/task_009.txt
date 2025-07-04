@@ -1,0 +1,43 @@
+# Task ID: 9
+# Title: Add Mobile Share Functionality
+# Status: pending
+# Dependencies: 5
+# Priority: low
+# Description: Implement native mobile sharing capabilities optimized for the treasure hunt experience
+# Details:
+Implement Web Share API for native mobile sharing with fallback to custom share options. Create share button with Tailwind styling that opens native share sheet. Include proper metadata for sharing (title, description, URL). Add share functionality for individual tasks and overall experience. Handle different mobile platforms (iOS/Android) appropriately.
+
+# Test Strategy:
+Test native share functionality on iOS and Android devices, verify fallback options work correctly, validate shared content appears properly, confirm share button is accessible and visible
+
+# Subtasks:
+## 1. Implement Web Share API Core Functionality [pending]
+### Dependencies: None
+### Description: Create a React hook that implements the Web Share API with proper feature detection and error handling
+### Details:
+Build useWebShare hook that checks navigator.share availability, handles share data (title, text, url), manages async share operations with try/catch, and returns share function and availability status. Include TypeScript types for share data.
+
+## 2. Create Share Button Component with Tailwind Styling [pending]
+### Dependencies: 9.1
+### Description: Design and implement a reusable ShareButton component with mobile-optimized styling and loading states
+### Details:
+Create ShareButton component that uses the useWebShare hook, includes share icon (using lucide-react or similar), implements Tailwind classes for touch-friendly sizing (min 44px tap target), adds loading/disabled states, and accepts customizable share data props.
+
+## 3. Build Custom Fallback Share Modal [pending]
+### Dependencies: 9.2
+### Description: Implement a fallback share modal for browsers without Web Share API support, featuring common share options
+### Details:
+Create ShareModal component with options for copying link to clipboard, sharing via WhatsApp/Facebook/Twitter using URL schemes, email sharing with mailto links. Use Tailwind for responsive modal design with backdrop and animations. Include success notifications for clipboard copy.
+
+## 4. Add Share Metadata and Platform-Specific Handling [pending]
+### Dependencies: 9.3
+### Description: Implement proper share metadata generation and handle platform-specific behaviors for iOS and Android
+### Details:
+Create utility functions to generate share metadata based on context (individual task vs overall experience), detect iOS/Android using user agent for platform-specific adjustments, handle share URL construction with proper deep linking support, ensure proper Open Graph tags are set for shared content.
+
+## 5. Integrate Share Functionality Throughout Application [pending]
+### Dependencies: 9.4
+### Description: Add share buttons to individual task cards and create a main share option for the overall treasure hunt experience
+### Details:
+Add ShareButton to task completion screens with task-specific metadata, implement main share button in app header or completion screen for sharing entire experience, ensure proper analytics tracking for share events, add share count tracking if needed for gamification.
+

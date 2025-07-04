@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: Setup Project Structure and Dependencies
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Initialize the project with HTML structure, CDN dependencies, and mobile-only viewport configuration
+# Details:
+Use Astro and ensure proper meta tags for mobile viewport, link Tailwind CSS CDN, GSAP CDN, and Google Fonts. Add mobile-only detection script to redirect desktop users. Set up proper viewport meta tag with width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no for mobile optimization.
+
+# Test Strategy:
+Test on various mobile devices (375-430px width), verify CDN resources load correctly, confirm desktop redirect works, validate viewport settings prevent zooming
+
+# Subtasks:
+## 1. Initialize Astro Project with Basic Configuration [pending]
+### Dependencies: None
+### Description: Create a new Astro project and configure it for mobile-first development with proper project structure
+### Details:
+Run 'npm create astro@latest' to initialize project. Choose minimal template. Configure astro.config.mjs with appropriate settings for mobile development. Set up src/pages, src/layouts, and src/components directories. Create a base layout component that will house the mobile viewport configuration.
+
+## 2. Configure Mobile Viewport and Meta Tags [pending]
+### Dependencies: 1.1
+### Description: Set up HTML head with mobile-specific viewport settings and essential meta tags for optimal mobile experience
+### Details:
+In the base layout component, add viewport meta tag: <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>. Include additional mobile meta tags: theme-color, apple-mobile-web-app-capable, and apple-mobile-web-app-status-bar-style. Ensure proper charset and description meta tags are included.
+
+## 3. Integrate Tailwind CSS and Google Fonts via CDN [pending]
+### Dependencies: 1.2
+### Description: Add Tailwind CSS CDN link and configure Google Fonts for styling the mobile application
+### Details:
+Add Tailwind CSS CDN script tag: <script src='https://cdn.tailwindcss.com'></script> in the head section. Configure Google Fonts by adding appropriate link tags for selected font families. Add a custom Tailwind configuration script to customize mobile-specific utilities if needed. Ensure CDN resources load with proper crossorigin attributes.
+
+## 4. Add GSAP Animation Library via CDN [pending]
+### Dependencies: 1.3
+### Description: Integrate GSAP (GreenSock) animation library through CDN for smooth mobile animations
+### Details:
+Add GSAP core CDN script: <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>. Include any necessary GSAP plugins like ScrollTrigger if needed for mobile interactions. Place scripts before closing body tag for optimal loading. Create a simple test animation to verify GSAP is working correctly.
+
+## 5. Implement Mobile-Only Detection and Desktop Redirect [pending]
+### Dependencies: 1.4
+### Description: Create a JavaScript detection script that identifies desktop users and redirects them to a mobile-only notice page
+### Details:
+Create a client-side script that checks user agent and screen width to detect desktop browsers. Use combination of window.innerWidth > 768 and !('ontouchstart' in window) for detection. If desktop is detected, redirect to a /mobile-only page. Create the mobile-only notice page with instructions to visit on mobile device. Add the detection script to the base layout to run on all pages.
+

@@ -1,0 +1,613 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TaskCard from '../components/TaskCard.astro';
+import InfoPanel from '../components/InfoPanel.astro';
+
+// Sample task data with video backgrounds
+const videoUrl = "https://res.cloudinary.com/mattblr/video/upload/f_auto,q_auto,c_fill/v1751665113/danny-stag/IMG_7031_z8g4tr.mov";
+
+const tasks = [
+  {
+    number: 1,
+    title: "Beer Pong Championship",
+    description: "Show your skills in the ultimate beer pong tournament",
+    action: "Sink 10 cups in a row",
+    videoUrl: videoUrl
+  },
+  {
+    number: 2,
+    title: "Karaoke Challenge",
+    description: "Belt out Danny's favorite songs",
+    action: "Perform 3 songs without laughing",
+    videoUrl: videoUrl
+  },
+  {
+    number: 3,
+    title: "Shot Roulette",
+    description: "Spin the wheel and take your chances",
+    action: "Complete the mystery shot challenge",
+    videoUrl: videoUrl
+  },
+  {
+    number: 4,
+    title: "Dance Battle",
+    description: "Show off your best moves on the dance floor",
+    action: "Win a dance-off against the groom",
+    videoUrl: videoUrl
+  },
+  {
+    number: 5,
+    title: "Pub Golf",
+    description: "9 holes, 9 pubs, 9 drinks",
+    action: "Complete the course under par",
+    videoUrl: videoUrl
+  }
+];
+---
+
+<BaseLayout title="Danny's Tasks">
+	<!-- Info Panel -->
+	<InfoPanel />
+	
+	<!-- Info Button -->
+	<button 
+		class="info-button fixed top-4 right-4 z-[60] p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-200 active:scale-95"
+		aria-label="Open info panel"
+	>
+		<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+		</svg>
+	</button>
+	
+	<!-- Hero Section -->
+	<section class="hero-section relative w-full h-[400vh] bg-black">
+		<!-- Video Background -->
+		<div class="hero-video-wrapper sticky top-0 w-full h-screen overflow-hidden">
+			<div class="hero-video-container absolute inset-0 w-full h-full">
+			<video 
+				class="hero-video absolute inset-0 w-full h-full object-cover"
+				autoplay
+				muted
+				loop
+				playsinline
+				poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect width='1' height='1' fill='%23000'/%3E%3C/svg%3E"
+			>
+				<source src="https://res.cloudinary.com/mattblr/video/upload/f_auto,q_auto,c_fill/v1751665113/danny-stag/IMG_7031_z8g4tr.mov" type="video/quicktime">
+				<source src="https://res.cloudinary.com/mattblr/video/upload/f_auto,q_auto,c_fill/v1751665113/danny-stag/IMG_7031_z8g4tr.mp4" type="video/mp4">
+			</video>
+			<!-- Dark overlay -->
+			<div class="absolute inset-0 bg-black/40"></div>
+			</div>
+			
+			<!-- Hero Content -->
+			<div class="hero-content absolute inset-0 flex flex-col items-center justify-center px-6 py-12 text-center z-10">
+				<!-- Main Title -->
+				<h1 class="hero-title font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white tracking-wider">
+					DANNY'S STAG
+				</h1>
+				
+				<!-- Scroll Indicator -->
+				<div class="scroll-indicator absolute bottom-8 left-1/2 transform -translate-x-1/2">
+					<div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+						<div class="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<!-- Task Videos Section -->
+	<section class="task-section relative min-h-screen">
+		<!-- Swipeable Video Container -->
+		<div class="video-swiper-container relative w-full h-screen bg-black overflow-hidden">
+			<!-- Videos Wrapper -->
+			<div class="videos-wrapper relative w-full h-full">
+				{tasks.map((task, index) => (
+					<div 
+						class="video-slide absolute inset-0 w-full h-full"
+						data-index={index}
+						style={`transform: translateX(${index * 100}%)`}
+					>
+						<!-- Video Background -->
+						<video 
+							class="task-video absolute inset-0 w-full h-full object-cover brightness-50"
+							muted
+							loop
+							playsinline
+							data-index={index}
+						>
+							<source src={task.videoUrl.replace('.mov', '.mp4')} type="video/mp4">
+							<source src={task.videoUrl} type="video/quicktime">
+						</video>
+						
+						<!-- Task Content Overlay -->
+						<div class="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
+							<!-- Task Number -->
+							<div class="task-number opacity-0">
+								<span class="text-8xl font-bold text-white/20">
+									{String(task.number).padStart(2, '0')}
+								</span>
+							</div>
+							
+							<!-- Task Title -->
+							<h2 class="task-title text-4xl sm:text-5xl font-display font-bold text-white mb-4 opacity-0">
+								{task.title}
+							</h2>
+							
+							<!-- Task Description -->
+							<p class="task-description text-lg text-white/80 mb-8 max-w-md opacity-0">
+								{task.description}
+							</p>
+							
+							<!-- Action Item -->
+							<div class="task-action bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 opacity-0">
+								<p class="text-white font-medium">
+									👉 {task.action}
+								</p>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+			
+			<!-- Progress Dots -->
+			<div class="progress-dots absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+				{tasks.map((_, index) => (
+					<button 
+						class={`dot w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white w-6' : 'bg-white/40'}`}
+						data-index={index}
+						aria-label={`Go to task ${index + 1}`}
+					></button>
+				))}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	/* Initial state for loading animation */
+	.hero-section {
+		visibility: visible;
+	}
+	
+	/* Video container styles */
+	.hero-video-container {
+		z-index: 0;
+	}
+	
+	.task-video {
+		filter: brightness(0.5);
+	}
+	
+	/* Swipe container styles */
+	.video-swiper-container {
+		touch-action: pan-y pinch-zoom;
+	}
+	
+	.video-slide {
+		will-change: transform;
+		transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+	
+	.video-slide.dragging {
+		transition: none;
+	}
+	
+	/* Initial state for info button */
+	.info-button {
+		opacity: 0;
+		transform: scale(0);
+	}
+	
+	/* Task content initial states */
+	.task-number,
+	.task-title,
+	.task-description,
+	.task-action {
+		opacity: 0;
+	}
+</style>
+
+<script>
+	// Import GSAP
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import { TextPlugin } from 'gsap/TextPlugin';
+	
+	// Register plugins
+	gsap.registerPlugin(ScrollTrigger, TextPlugin);
+	
+	// GSAP animations for background elements
+	document.addEventListener('DOMContentLoaded', () => {
+		// Initialize info panel
+		initInfoPanel();
+		
+		// Create loading animation timeline
+		const loadingTimeline = gsap.timeline({
+			onComplete: () => {
+				// Start background animations after loading
+				startBackgroundAnimations();
+			}
+		});
+		
+		// Loading animation sequence
+		loadingTimeline
+			.from('.hero-video-container', {
+				opacity: 0,
+				duration: 1
+			})
+			.from('.hero-title', {
+				opacity: 0,
+				y: 50,
+				duration: 1.5,
+				ease: 'power3.out'
+			}, '-=0.5')
+			.from('.hero-title', {
+				letterSpacing: '50px',
+				duration: 1.5,
+				ease: 'power2.out'
+			}, '-=1.5')
+			.from('.scroll-indicator', {
+				opacity: 0,
+				y: -10,
+				duration: 0.6,
+				ease: 'power2.out'
+			}, '-=0.2');
+	});
+	
+	// Start background animations
+	function startBackgroundAnimations() {
+		// Initialize parallax scrolling for hero
+		initHeroParallax();
+		
+		// Initialize video swiper functionality
+		initVideoSwiper();
+		
+		// Start playing first video
+		const firstVideo = document.querySelector('.task-video[data-index="0"]') as HTMLVideoElement;
+		if (firstVideo) {
+			firstVideo.play().catch((e: Error) => console.log('Video play failed:', e));
+		}
+	}
+	
+	// Initialize hero parallax scrolling
+	function initHeroParallax() {
+		// Hero title parallax - moves up and fades out first
+		gsap.to('.hero-title', {
+			yPercent: -100,
+			letterSpacing: '100px',
+			opacity: 0,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: '.hero-section',
+				start: 'top top',
+				end: '40% top',
+				scrub: 1
+			}
+		});
+		
+		// Video fades out after title is gone
+		gsap.to('.hero-video-container', {
+			opacity: 0,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: '.hero-section',
+				start: '40% top',
+				end: '70% top',
+				scrub: 1
+			}
+		});
+		
+		// Scroll indicator fade out early
+		gsap.to('.scroll-indicator', {
+			opacity: 0,
+			y: -20,
+			scrollTrigger: {
+				trigger: '.hero-section',
+				start: 'top top',
+				end: '20% top',
+				scrub: true
+			}
+		});
+		
+		// Fade in task video section after hero video fades out
+		gsap.fromTo('.video-swiper-container', 
+			{
+				opacity: 0
+			},
+			{
+				opacity: 1,
+				ease: 'none',
+				scrollTrigger: {
+					trigger: '.hero-section',
+					start: '70% top',
+					end: 'bottom top',
+					scrub: 1
+				}
+			}
+		);
+	}
+	
+	// Initialize video swiper functionality
+	function initVideoSwiper() {
+		const container = document.querySelector('.video-swiper-container');
+		const wrapper = document.querySelector('.videos-wrapper');
+		const slides = document.querySelectorAll('.video-slide');
+		const videos = document.querySelectorAll('.task-video');
+		const dots = document.querySelectorAll('.progress-dots .dot');
+		
+		if (!container || !wrapper || slides.length === 0) return;
+		
+		let currentIndex = 0;
+		let startX = 0;
+		let currentX = 0;
+		let isDragging = false;
+		let startTime = 0;
+		
+		// Touch event handlers
+		function handleTouchStart(e: TouchEvent) {
+			isDragging = true;
+			startX = e.touches[0].clientX;
+			currentX = startX;
+			startTime = Date.now();
+			
+			// Add dragging class to current slide
+			slides[currentIndex].classList.add('dragging');
+		}
+		
+		function handleTouchMove(e: TouchEvent) {
+			if (!isDragging) return;
+			
+			e.preventDefault();
+			currentX = e.touches[0].clientX;
+			const diff = currentX - startX;
+			
+			// Update current slide position
+			const currentSlide = slides[currentIndex];
+			gsap.set(currentSlide, {
+				x: diff,
+				ease: 'none'
+			});
+			
+			// Show peek of adjacent slides
+			if (diff > 0 && currentIndex > 0) {
+				// Swiping right, show previous slide
+				const prevSlide = slides[currentIndex - 1];
+				gsap.set(prevSlide, {
+					x: diff - window.innerWidth,
+					ease: 'none'
+				});
+			} else if (diff < 0 && currentIndex < slides.length - 1) {
+				// Swiping left, show next slide
+				const nextSlide = slides[currentIndex + 1];
+				gsap.set(nextSlide, {
+					x: diff + window.innerWidth,
+					ease: 'none'
+				});
+			}
+		}
+		
+		function handleTouchEnd() {
+			if (!isDragging) return;
+			isDragging = false;
+			
+			const diff = currentX - startX;
+			const velocity = diff / (Date.now() - startTime);
+			const threshold = window.innerWidth * 0.3; // 30% of screen width
+			
+			// Remove dragging class
+			slides[currentIndex].classList.remove('dragging');
+			
+			// Determine if we should change slides
+			if (Math.abs(diff) > threshold || Math.abs(velocity) > 0.5) {
+				if (diff > 0 && currentIndex > 0) {
+					// Swipe right - go to previous slide
+					navigateToSlide(currentIndex - 1);
+				} else if (diff < 0 && currentIndex < slides.length - 1) {
+					// Swipe left - go to next slide
+					navigateToSlide(currentIndex + 1);
+				} else {
+					// Bounce back
+					resetSlidePositions();
+				}
+			} else {
+				// Not enough movement, bounce back
+				resetSlidePositions();
+			}
+		}
+		
+		function navigateToSlide(newIndex: number) {
+			// Stop current video
+			if (videos[currentIndex]) {
+				(videos[currentIndex] as HTMLVideoElement).pause();
+			}
+			
+			// Animate slides
+			slides.forEach((slide, index) => {
+				const offset = (index - newIndex) * 100;
+				gsap.to(slide, {
+					x: 0,
+					xPercent: offset,
+					duration: 0.3,
+					ease: 'power2.out'
+				});
+			});
+			
+			// Update dots
+			dots[currentIndex].classList.remove('bg-white', 'w-6');
+			dots[currentIndex].classList.add('bg-white/40');
+			dots[newIndex].classList.remove('bg-white/40');
+			dots[newIndex].classList.add('bg-white', 'w-6');
+			
+			// Play new video and animate content
+			currentIndex = newIndex;
+			if (videos[currentIndex]) {
+				(videos[currentIndex] as HTMLVideoElement).play().catch((e: Error) => console.log('Video play failed:', e));
+			}
+			animateTaskContent(currentIndex);
+		}
+		
+		function resetSlidePositions() {
+			slides.forEach((slide, index) => {
+				const offset = (index - currentIndex) * 100;
+				gsap.to(slide, {
+					x: 0,
+					xPercent: offset,
+					duration: 0.3,
+					ease: 'power2.out'
+				});
+			});
+		}
+		
+		// Animate task content when slide becomes active
+		function animateTaskContent(index: number) {
+			const slide = slides[index];
+			if (!slide) return;
+			
+			const timeline = gsap.timeline();
+			
+			timeline
+				.fromTo(slide.querySelector('.task-number'), 
+					{ opacity: 0, scale: 0.5 },
+					{ opacity: 0.2, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }
+				)
+				.fromTo(slide.querySelector('.task-title'),
+					{ opacity: 0, y: 30 },
+					{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+					'-=0.3'
+				)
+				.fromTo(slide.querySelector('.task-description'),
+					{ opacity: 0, y: 20 },
+					{ opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+					'-=0.4'
+				)
+				.fromTo(slide.querySelector('.task-action'),
+					{ opacity: 0, scale: 0.8 },
+					{ opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' },
+					'-=0.3'
+				);
+		}
+		
+		// Add event listeners
+		container.addEventListener('touchstart', handleTouchStart, { passive: true });
+		container.addEventListener('touchmove', handleTouchMove, { passive: false });
+		container.addEventListener('touchend', handleTouchEnd, { passive: true });
+		
+		// Dot navigation
+		dots.forEach((dot, index) => {
+			dot.addEventListener('click', () => {
+				if (index !== currentIndex) {
+					navigateToSlide(index);
+				}
+			});
+		});
+		
+		// Initialize slide positions and animate first content
+		resetSlidePositions();
+		animateTaskContent(0);
+	}
+	
+	// Initialize Info Panel functionality
+	function initInfoPanel() {
+		const infoButton = document.querySelector('.info-button');
+		const infoPanel = document.querySelector('.info-panel');
+		const infoPanelContent = document.querySelector('.info-panel-content');
+		const closeButton = document.querySelector('.info-panel-close');
+		const backdrop = document.querySelector('.info-panel-backdrop');
+		
+		console.log('Info panel init:', { infoButton, infoPanel, infoPanelContent, closeButton, backdrop });
+		
+		if (!infoButton || !infoPanel || !infoPanelContent || !closeButton || !backdrop) {
+			console.error('Info panel elements not found');
+			return;
+		}
+		
+		let isOpen = false;
+
+		
+		// Create GSAP timeline for panel animations
+		const panelTimeline = gsap.timeline({ paused: true });
+		
+		// Set initial state
+		gsap.set(infoPanelContent, { yPercent: -100 });
+		gsap.set(backdrop, { opacity: 0, pointerEvents: 'none' });
+		gsap.set(infoPanel, { pointerEvents: 'none' });
+		
+		// Build animation timeline
+		panelTimeline
+			.set(infoPanel, { pointerEvents: 'auto' })
+			.to(infoPanelContent, {
+				yPercent: 0,
+				duration: 0.6,
+				ease: 'power3.out'
+			})
+			.to(backdrop, {
+				opacity: 1,
+				pointerEvents: 'auto',
+				duration: 0.3
+			}, '-=0.4')
+			.set({}, {}, '+=0.1'); // Add a small delay at the end
+		
+		// Open panel function
+		function openPanel() {
+			console.log('Opening panel');
+			isOpen = true;
+			infoPanel.setAttribute('data-panel-open', 'true');
+			panelTimeline.play();
+
+			gsap.set(infoButton, {opacity: 0, pointerEvents: 'none'});
+			
+			// Haptic feedback if available
+			if ('vibrate' in navigator) {
+				navigator.vibrate(10);
+			}
+		}
+		
+		// Close panel function
+		function closePanel() {
+			console.log('Closing panel');
+			isOpen = false;
+			infoPanel.setAttribute('data-panel-open', 'false');
+			panelTimeline.reverse().eventCallback('onReverseComplete', () => {
+				gsap.set(infoPanel, { pointerEvents: 'none' });
+			});
+
+			gsap.set(infoButton, {opacity: 1, pointerEvents: 'auto'});
+			
+			// Haptic feedback if available
+			if ('vibrate' in navigator) {
+				navigator.vibrate(5);
+			}
+		}
+		
+		// Event listeners
+		infoButton.addEventListener('click', () => {
+			console.log('Info button clicked');
+			openPanel();
+		});
+		closeButton.addEventListener('click', closePanel);
+		backdrop.addEventListener('click', closePanel);
+		
+		// Escape key to close
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && isOpen) {
+				closePanel();
+			}
+		});
+		
+		// Animate info button on load
+		gsap.fromTo('.info-button', 
+			{
+				scale: 0,
+				opacity: 0
+			},
+			{
+				scale: 1,
+				opacity: 1,
+				duration: 0.6,
+				delay: 1,
+				ease: 'back.out(1.7)'
+			}
+		);
+	}
+</script>

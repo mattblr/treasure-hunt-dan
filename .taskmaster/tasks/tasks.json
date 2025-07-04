@@ -1,0 +1,684 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Project Structure and Dependencies",
+        "description": "Initialize the project with HTML structure, CDN dependencies, and mobile-only viewport configuration",
+        "details": "Use Astro and ensure proper meta tags for mobile viewport, link Tailwind CSS CDN, GSAP CDN, and Google Fonts. Add mobile-only detection script to redirect desktop users. Set up proper viewport meta tag with width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no for mobile optimization.",
+        "testStrategy": "Test on various mobile devices (375-430px width), verify CDN resources load correctly, confirm desktop redirect works, validate viewport settings prevent zooming",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Astro Project with Basic Configuration",
+            "description": "Create a new Astro project and configure it for mobile-first development with proper project structure",
+            "dependencies": [],
+            "details": "Run 'npm create astro@latest' to initialize project. Choose minimal template. Configure astro.config.mjs with appropriate settings for mobile development. Set up src/pages, src/layouts, and src/components directories. Create a base layout component that will house the mobile viewport configuration.",
+            "status": "done",
+            "testStrategy": "Verify project builds successfully with 'npm run dev' and check that the development server starts without errors"
+          },
+          {
+            "id": 2,
+            "title": "Configure Mobile Viewport and Meta Tags",
+            "description": "Set up HTML head with mobile-specific viewport settings and essential meta tags for optimal mobile experience",
+            "dependencies": [
+              1
+            ],
+            "details": "In the base layout component, add viewport meta tag: <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>. Include additional mobile meta tags: theme-color, apple-mobile-web-app-capable, and apple-mobile-web-app-status-bar-style. Ensure proper charset and description meta tags are included.\n<info added on 2025-07-04T21:03:10.930Z>\nSuccessfully implemented BaseLayout.astro with comprehensive mobile optimization meta tags. The layout includes viewport configuration with user-scalable=no for consistent mobile behavior, PWA-ready meta tags for app-like experience (apple-mobile-web-app-capable and status-bar-style), theme-color for browser chrome customization, and format-detection disabled to prevent automatic phone number linking. Added CSS reset styles specifically targeting mobile touch behaviors and tap highlight removal. The index.astro page has been refactored to utilize the new BaseLayout component, establishing a consistent foundation for all pages in the application.\n</info added on 2025-07-04T21:03:10.930Z>",
+            "status": "done",
+            "testStrategy": "Use browser developer tools to verify viewport is correctly set to device width and pinch-to-zoom is disabled on mobile devices"
+          },
+          {
+            "id": 3,
+            "title": "Integrate Tailwind CSS and Google Fonts via CDN",
+            "description": "Add Tailwind CSS CDN link and configure Google Fonts for styling the mobile application",
+            "dependencies": [
+              2
+            ],
+            "details": "Add Tailwind CSS CDN script tag: <script src='https://cdn.tailwindcss.com'></script> in the head section. Configure Google Fonts by adding appropriate link tags for selected font families. Add a custom Tailwind configuration script to customize mobile-specific utilities if needed. Ensure CDN resources load with proper crossorigin attributes.\n<info added on 2025-07-04T21:04:16.718Z>\nSuccessfully integrated Tailwind CSS CDN with custom configuration script that defines brand colors (primary, secondary, accent palettes) and typography scale. Added Google Fonts links for Inter (weights 400, 500, 600) and Poppins (weights 600, 700, 800) with display=swap for optimal loading. Created Tailwind config extension that maps font-sans to Inter and font-display to Poppins. Refactored index.html to utilize Tailwind utility classes throughout, replacing inline styles with responsive utilities like text-lg sm:text-xl, px-4 md:px-8, and custom color classes like text-primary-600 and bg-secondary-50. All CDN resources configured with integrity hashes and crossorigin=\"anonymous\" for security.\n</info added on 2025-07-04T21:04:16.718Z>",
+            "status": "done",
+            "testStrategy": "Apply basic Tailwind classes to a test element and verify styles are applied. Check network tab to confirm CDN resources load successfully"
+          },
+          {
+            "id": 4,
+            "title": "Add GSAP Animation Library via CDN",
+            "description": "Integrate GSAP (GreenSock) animation library through CDN for smooth mobile animations",
+            "dependencies": [
+              3
+            ],
+            "details": "Add GSAP core CDN script: <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>. Include any necessary GSAP plugins like ScrollTrigger if needed for mobile interactions. Place scripts before closing body tag for optimal loading. Create a simple test animation to verify GSAP is working correctly.\n<info added on 2025-07-04T21:05:13.422Z>\nSuccessfully integrated GSAP core library (v3.12.2) along with ScrollTrigger and TextPlugin via CDN links. Created test animations on index.astro including: fade-in entrance animation for the main heading with 1-second duration and 0.5s delay, slide-up animation for paragraph text with stagger effect, and scale/rotate animation for button element on page load. All animations trigger automatically on page load to confirm GSAP functionality. CDN scripts properly loaded before closing body tag with gsap.registerPlugin(ScrollTrigger, TextPlugin) initialization.\n</info added on 2025-07-04T21:05:13.422Z>",
+            "status": "done",
+            "testStrategy": "Create a basic GSAP animation (e.g., fade in an element) and verify it runs smoothly on page load"
+          },
+          {
+            "id": 5,
+            "title": "Implement Mobile-Only Detection and Desktop Redirect",
+            "description": "Create a JavaScript detection script that identifies desktop users and redirects them to a mobile-only notice page",
+            "dependencies": [
+              4
+            ],
+            "details": "Create a client-side script that checks user agent and screen width to detect desktop browsers. Use combination of window.innerWidth > 768 and !('ontouchstart' in window) for detection. If desktop is detected, redirect to a /mobile-only page. Create the mobile-only notice page with instructions to visit on mobile device. Add the detection script to the base layout to run on all pages.\n<info added on 2025-07-04T21:06:20.542Z>\nSuccessfully implemented desktop detection and redirection system. Created desktop-notice.astro page displaying a mobile-only message with styling that matches the app's design. The mobile detection script was integrated into BaseLayout.astro and uses a comprehensive approach: checks viewport width (<=430px), verifies touch capability support, and analyzes user agent strings for mobile indicators. The script automatically redirects desktop users to /desktop-notice and includes a resize event listener to handle responsive behavior when users change their browser window size. The detection runs on every page load ensuring consistent mobile-only enforcement across the entire application.\n</info added on 2025-07-04T21:06:20.542Z>",
+            "status": "done",
+            "testStrategy": "Test on various devices and browser developer tools mobile/desktop modes to ensure correct detection and redirection behavior"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement Hero Section with Animated Background",
+        "description": "Create the hero section with event title, animated background, and GSAP parallax scrolling effects",
+        "details": "Build hero section using Tailwind's gradient utilities (bg-gradient-to-br from-purple-900 to-black), implement animated background elements with GSAP, add parallax scrolling effect on scroll, include event title with custom typography using Google Fonts and Tailwind's font-family utilities. Add loading animation using GSAP timeline.",
+        "testStrategy": "Test smooth scrolling performance on mobile devices, verify animations don't cause lag, validate hero section displays correctly on different screen sizes within mobile range",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set Up Hero Section HTML Structure and Tailwind Gradient Background",
+            "description": "Create the base HTML structure for the hero section with semantic markup and apply Tailwind's gradient background utilities",
+            "dependencies": [],
+            "details": "Create a full-viewport hero section container using Tailwind classes (min-h-screen, relative, overflow-hidden). Apply the gradient background using bg-gradient-to-br from-purple-900 to-black. Structure the hero with a main container div, content wrapper for text elements, and placeholder divs for animated background elements. Ensure proper z-index layering for content to appear above animated elements.\n<info added on 2025-07-04T21:08:55.349Z>\nSuccessfully implemented the hero section with all requested features. The full-viewport container uses Tailwind's min-h-screen with a gradient background transitioning from purple-900 to black. Added multiple animated background circles with CSS animations and blur effects for visual depth. Incorporated an SVG grid pattern overlay for additional texture. The HTML structure follows semantic best practices with proper z-index layering to ensure content appears above all animated elements. Included a placeholder content section below the hero to enable scrolling functionality tests. All animations are performant and the layout is responsive across different viewport sizes.\n</info added on 2025-07-04T21:08:55.349Z>",
+            "status": "done",
+            "testStrategy": "Verify the hero section fills the viewport, gradient displays correctly across different screen sizes, and HTML structure is semantic and accessible"
+          },
+          {
+            "id": 2,
+            "title": "Integrate Google Fonts and Create Event Title Typography",
+            "description": "Add Google Fonts to the project and implement custom typography for the event title using Tailwind's font-family utilities",
+            "dependencies": [
+              1
+            ],
+            "details": "Import chosen Google Fonts (e.g., Inter, Poppins, or Montserrat) via link tag or @import. Configure custom font families in tailwind.config.js under theme.extend.fontFamily. Create the event title component with responsive text sizing using Tailwind's text-{size} classes, appropriate font weights, and text color that contrasts well with the gradient background. Add subtle text shadow for better readability.\n<info added on 2025-07-04T21:09:32.219Z>\nGoogle Fonts (Inter and Poppins) integration was completed through BaseLayout. Applied Poppins font-display to the main hero title with gradient text effect specifically for 'Task Journey' text using Tailwind's text-transparent and bg-clip-text utilities. Implemented appropriate font weights: font-bold for title, font-medium for subtitle, font-semibold for CTA button. Set responsive text sizing with mobile-first approach: text-4xl md:text-5xl lg:text-6xl for title, text-lg md:text-xl for subtitle, ensuring optimal readability across all device sizes. Event date styled with Inter font for cleaner numerical display.\n</info added on 2025-07-04T21:09:32.219Z>",
+            "status": "done",
+            "testStrategy": "Ensure fonts load correctly, verify typography scales appropriately on different devices, and confirm text remains readable against the gradient background"
+          },
+          {
+            "id": 3,
+            "title": "Create Animated Background Elements with GSAP",
+            "description": "Design and implement floating/moving background elements that will be animated using GSAP",
+            "dependencies": [
+              1
+            ],
+            "details": "Create multiple SVG or div elements to serve as animated background shapes (circles, polygons, or abstract forms). Position them absolutely within the hero container at various starting points. Apply initial opacity, blur effects, and transforms using Tailwind utilities. Initialize GSAP and create animation timelines for each element with properties like x, y, rotation, scale, and opacity. Use repeat: -1 for infinite loops and implement varying durations and ease functions for organic movement.\n<info added on 2025-07-04T21:11:52.358Z>\nI'll help you update the subtask with the implementation details. Let me first check the current task structure to understand the context better.Now let me update the subtask with the implementation details using the task-master command:The subtask has been successfully updated with the implementation details. The update added information about:\n\n- Three floating circles with different movement patterns and durations (20s, 25s, 30s)\n- Morphing shape animations using borderRadius transformations\n- Subtle grid rotation effect at 0.1 degrees per second\n- Particle system with 15 dynamically generated floating elements\n- All animations using infinite repeat with yoyo effect for smooth continuous motion\n\nThe implementation details have been appended to the subtask's existing description with a timestamp.\n</info added on 2025-07-04T21:11:52.358Z>",
+            "status": "done",
+            "testStrategy": "Verify all background elements render correctly, animations run smoothly without performance issues, and elements don't interfere with text readability"
+          },
+          {
+            "id": 4,
+            "title": "Implement GSAP Parallax Scrolling Effect",
+            "description": "Add parallax scrolling functionality to hero elements using GSAP ScrollTrigger plugin",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Import and register GSAP ScrollTrigger plugin. Create scroll-triggered animations for different hero elements - have the title move slower than scroll speed (parallax effect), background elements move at different speeds for depth, and the gradient background potentially shift hue or intensity. Use ScrollTrigger.create() with appropriate start/end triggers and scrub property for smooth scroll-linked animation. Implement performance optimizations like will-change and transform3d.\n<info added on 2025-07-04T21:12:51.554Z>\nSuccessfully implemented multi-layered parallax scrolling system with GSAP ScrollTrigger. Background circles move at -50% scroll speed creating deep background effect, grid pattern at -30% for mid-layer depth, and hero content at -20% for foreground separation. Added staggered parallax to individual text elements (title, subtitle, CTA) with progressive speed differences for enhanced depth perception. Integrated smooth fade-out animation for scroll indicator element triggered by initial scroll movement. All animations utilize ScrollTrigger's scrub: 1 property for fluid scroll-synchronized motion without jarring transitions.\n</info added on 2025-07-04T21:12:51.554Z>",
+            "status": "done",
+            "testStrategy": "Test parallax effects work smoothly during scroll, verify performance on mobile devices, and ensure animations don't cause layout shifts or reflows"
+          },
+          {
+            "id": 5,
+            "title": "Create GSAP Loading Animation Sequence",
+            "description": "Develop an engaging loading animation that plays when the hero section first appears using GSAP timeline",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Create a GSAP timeline that orchestrates the initial load sequence. Start with all elements hidden (opacity: 0, transform properties for entrance effects). Animate the gradient background first (fade in or sweep effect), then stagger in the background elements with elastic or back easing, followed by the event title with a typewriter effect or elegant fade/slide. Use timeline labels and position parameters for precise timing control. Add a loading overlay that fades out once animations complete.\n<info added on 2025-07-04T21:13:58.846Z>\nSuccessfully implemented the loading animation timeline with GSAP. The hero section now fades in smoothly, followed by background circles that scale up with staggered timing. Text elements animate in from various directions using overlapping timelines for a cohesive entrance effect. The entire loading sequence completes before the continuous background animations begin. Added corresponding CSS rules to ensure elements start with opacity: 0 and proper initial transform states, preventing any flash of unstyled content during page load.\n</info added on 2025-07-04T21:13:58.846Z>",
+            "status": "done",
+            "testStrategy": "Ensure loading animation plays only once on initial load, verify timing feels natural and not too slow, and confirm no flash of unstyled content (FOUC) occurs"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Create Task Card Components with Tailwind Styling",
+        "description": "Build 5 task cards with glassmorphism effects, stylized numbering, and proper mobile layout",
+        "details": "Create task card structure with Tailwind classes: bg-white/10 backdrop-blur-md rounded-3xl p-6. Implement stylized numbering with text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500. Add task titles, descriptions, and action items with proper typography hierarchy. Include map integration using Leaflet or image hints for each card.",
+        "testStrategy": "Validate all 5 cards display correctly, test glassmorphism effects render properly, verify text readability against background, confirm maps/images load correctly",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Tailwind configuration and create base card component structure",
+            "description": "Configure Tailwind CSS for glassmorphism effects and create the foundational React component for task cards with proper styling classes",
+            "dependencies": [],
+            "details": "Install and configure Tailwind CSS if not already present. Create a TaskCard.jsx component with base structure using bg-white/10, backdrop-blur-md, rounded-3xl, and p-6 classes. Set up the component to accept props for task data (number, title, description, actions). Ensure the glassmorphism effect works properly with appropriate backdrop-filter support.\n<info added on 2025-07-04T21:16:51.658Z>\nTaskCard.astro component successfully created with the following implementation:\n- Applied glassmorphism styling with bg-white/10 and backdrop-blur-md for the card background\n- Implemented gradient border effect for visual enhancement\n- Added smooth hover state transitions for improved interactivity\n- Component now accepts comprehensive props: number, title, description, actions, location, and imageUrl\n- Leveraged existing Tailwind configuration in the project\n- Component structure follows Astro patterns for optimal performance\n</info added on 2025-07-04T21:16:51.658Z>",
+            "status": "done",
+            "testStrategy": "Create a simple test rendering the TaskCard component with sample data to verify the glassmorphism effect displays correctly"
+          },
+          {
+            "id": 2,
+            "title": "Implement stylized task numbering with gradient effects",
+            "description": "Add the large gradient numbers (1-5) to each card using Tailwind's text utilities and gradient backgrounds",
+            "dependencies": [
+              1
+            ],
+            "details": "Within the TaskCard component, implement the task number display using text-6xl, font-bold, text-transparent, bg-clip-text, and bg-gradient-to-r from-pink-500 to-violet-500 classes. Position the number appropriately within the card layout. Create a prop to accept the task number and ensure it displays prominently.\n<info added on 2025-07-04T21:17:28.400Z>\nCompleted implementation with absolute positioning at opacity-50 for subtle background effect. Added zero-padding logic to ensure consistent two-digit display format (01, 02, etc.) for visual uniformity across all task cards.\n</info added on 2025-07-04T21:17:28.400Z>",
+            "status": "done",
+            "testStrategy": "Verify that numbers 1-5 display with the correct gradient effect and are properly positioned within each card"
+          },
+          {
+            "id": 3,
+            "title": "Add typography hierarchy for titles, descriptions, and action items",
+            "description": "Implement the text content sections of the card with proper Tailwind typography classes for visual hierarchy",
+            "dependencies": [
+              2
+            ],
+            "details": "Add title section with appropriate font size and weight (e.g., text-2xl font-semibold). Implement description area with readable text sizing and proper contrast against the glassmorphism background. Create an action items list with bullet points or checkboxes, ensuring good spacing and readability. Use Tailwind's text color utilities to ensure sufficient contrast.\n<info added on 2025-07-04T21:18:05.606Z>\nTask completed successfully. The TaskCard component now features a comprehensive typography system with clear visual hierarchy. The title utilizes text-2xl with font-display and bold weight in white for maximum prominence. Description text employs gray-300 coloring with relaxed line height for comfortable reading. Action items are styled with small text and distinctive purple accent bullets for visual interest. Location information uses small text in purple-300 to maintain consistency with the accent color scheme while remaining secondary in the hierarchy.\n</info added on 2025-07-04T21:18:05.606Z>",
+            "status": "done",
+            "testStrategy": "Test readability of all text elements against the glassmorphism background in both light and dark environments"
+          },
+          {
+            "id": 4,
+            "title": "Integrate map hints or location imagery for each card",
+            "description": "Add map integration using Leaflet or static map images to provide location context for each task",
+            "dependencies": [
+              3
+            ],
+            "details": "Install react-leaflet if using interactive maps, or prepare static map images for each of the 5 tasks. Create a map container within each card that displays either a small interactive Leaflet map or a static image hint. Style the map container to fit well within the card design using appropriate Tailwind classes for sizing and borders. Ensure maps are responsive and don't break the card layout.\n<info added on 2025-07-04T21:19:28.988Z>\nI'll analyze the current state of the task card components and help update the subtask details based on your progress.Location imagery has been successfully implemented using the optional imageUrl prop approach. Instead of using react-leaflet or static map images, the implementation leverages Unsplash images displayed in a dedicated container with h-32 height and rounded corners. The images feature an opacity-70 to opacity-100 hover transition effect for subtle interactivity. The location text remains separate, displayed with a purple-300 map pin icon above the card title. Implementation follows the design pattern where only select tasks (3 out of 5) include images, creating intentional visual variety without overwhelming the interface. The gray-800/50 background color maintains visual consistency for cards without images.\n</info added on 2025-07-04T21:19:28.988Z>",
+            "status": "done",
+            "testStrategy": "Verify that map components or images load correctly for all 5 cards and maintain proper aspect ratios on different screen sizes"
+          },
+          {
+            "id": 5,
+            "title": "Implement responsive mobile layout and create 5 unique task instances",
+            "description": "Ensure cards are fully responsive on mobile devices and create 5 distinct task cards with unique content",
+            "dependencies": [
+              4
+            ],
+            "details": "Apply responsive Tailwind classes to ensure cards stack properly on mobile (using grid or flex with appropriate breakpoints). Adjust padding, font sizes, and spacing for mobile views using Tailwind's responsive prefixes (sm:, md:, lg:). Create 5 unique task instances with different content, numbers, and map locations. Implement a container component that renders all 5 cards in a responsive grid layout.\n<info added on 2025-07-04T21:20:10.924Z>\nImplemented responsive mobile layout using max-w-md container with p-4 padding that scales appropriately on smaller screens. Created 5 unique task card instances featuring adventure and exploration themes including mountain expeditions, archaeological discoveries, ocean exploration, sky adventures, and time travel quests. Each card includes custom hover effects with scale transforms and shadow transitions. Added staggered fade-in animations using CSS animation delays for visual appeal when cards load. Cards adapt seamlessly to mobile viewports with proper text wrapping and image scaling. Integrated a progress summary component at the bottom of the layout that displays overall completion statistics across all task cards.\n</info added on 2025-07-04T21:20:10.924Z>",
+            "status": "done",
+            "testStrategy": "Test the layout on various mobile device sizes (320px to 768px width) to ensure cards remain readable and properly styled"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Implement Horizontal Card Swiping with Touch Gestures",
+        "description": "Add swipe functionality for navigating between task cards with smooth GSAP transitions",
+        "details": "Implement touch gesture detection for horizontal swiping using JavaScript touch events (touchstart, touchmove, touchend). Create smooth card transitions with GSAP animations. Add progress dots showing current card position using Tailwind utilities. Implement swipe thresholds and momentum-based scrolling for natural feel. Use Tailwind's touch utilities for better mobile interactions.",
+        "testStrategy": "Test swipe gestures on various mobile devices, verify smooth transitions between cards, validate progress dots update correctly, ensure no accidental vertical scrolling",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set Up Touch Event Listeners and State Management",
+            "description": "Create the foundation for touch gesture detection by implementing event listeners and managing touch state",
+            "dependencies": [],
+            "details": "Add touchstart, touchmove, and touchend event listeners to the card container. Create state variables to track touch start position, current position, and velocity. Implement a touch handler class or module that captures initial touch coordinates, tracks movement delta, and calculates swipe velocity. Use passive event listeners for better performance. Add touch-action CSS property to prevent default browser behaviors.\n<info added on 2025-07-04T21:28:25.481Z>\nTouch event listeners successfully implemented with touchstart, touchmove, and touchend handlers attached to the card container. State management now includes variables for tracking initial touch position, current touch position, drag state (isDragging flag), and swipe velocity calculations. Added dynamic CSS class management to apply 'dragging' class during touch interactions, providing visual feedback to users. Event listeners configured with passive: true option to improve scrolling performance and prevent blocking the main thread. Touch-action CSS property set to 'pan-y' on card container to allow vertical scrolling while preventing horizontal browser gestures from interfering with card swiping.\n</info added on 2025-07-04T21:28:25.481Z>",
+            "status": "done",
+            "testStrategy": "Test touch event capture on various devices, verify state updates correctly, and ensure no memory leaks from event listeners"
+          },
+          {
+            "id": 2,
+            "title": "Implement Card Positioning and Transform Logic",
+            "description": "Create the core logic for positioning cards based on touch input and managing card stack layout",
+            "dependencies": [
+              1
+            ],
+            "details": "Build a card manager that tracks current card index and calculates transform values for each card. Implement translateX calculations based on touch delta. Create a stacking system where inactive cards are slightly scaled down and offset. Use CSS transform3d for hardware acceleration. Implement bounds checking to prevent swiping beyond first/last card. Add data attributes to track card positions.\n<info added on 2025-07-04T21:30:09.201Z>\nI'll analyze the current subtask and add the new implementation details as requested.Now I'll update the subtask with the new implementation details provided by the user.Task 4.2 has been successfully updated with the implementation details. The new information has been appended to the subtask's details section.\n</info added on 2025-07-04T21:30:09.201Z>",
+            "status": "done",
+            "testStrategy": "Verify correct transform values are applied, test edge cases at first/last card, and ensure smooth rendering performance"
+          },
+          {
+            "id": 3,
+            "title": "Add GSAP Animation Integration for Smooth Transitions",
+            "description": "Integrate GSAP to handle smooth card transitions during and after swipe gestures",
+            "dependencies": [
+              2
+            ],
+            "details": "Create GSAP timelines for card enter/exit animations. Implement smooth transition animations using gsap.to() with appropriate easing (e.g., Power2.easeOut). Add momentum-based animations that continue movement based on swipe velocity. Create snap-to-card functionality that centers the nearest card after release. Implement interrupt handling to stop animations when new touch begins. Use GSAP's overwrite modes to prevent animation conflicts.\n<info added on 2025-07-04T21:30:47.013Z>\nGSAP integration complete. Using gsap.set() for real-time positioning updates during drag events to ensure immediate visual feedback. On touch release, gsap.to() provides smooth animated transitions with power2.out easing and 0.3s duration for natural deceleration. Animation system implemented in both navigateToCard() for card navigation and resetCardPositions() for returning cards to default state. Proper animation cleanup and overwrite handling prevents conflicts during rapid user interactions.\n</info added on 2025-07-04T21:30:47.013Z>",
+            "status": "done",
+            "testStrategy": "Test animation smoothness across devices, verify proper interrupt handling, and measure frame rates during transitions"
+          },
+          {
+            "id": 4,
+            "title": "Create Progress Indicator Dots with Active State",
+            "description": "Build a visual progress indicator showing current card position using dots",
+            "dependencies": [
+              2
+            ],
+            "details": "Create a dots container using Tailwind's flex utilities. Generate dot elements dynamically based on total card count. Style dots using Tailwind classes (w-2 h-2 rounded-full bg-gray-300). Implement active dot styling (bg-blue-500 scale-125). Add smooth transitions between dot states using Tailwind's transition utilities. Position dots container with fixed positioning at bottom of viewport. Update active dot on card change with proper accessibility attributes.\n<info added on 2025-07-04T21:31:25.112Z>\nImplementation completed. Dots are generated dynamically using a map function with the first dot set as active initially. Active dots receive bg-purple-400 and w-6 classes for visual distinction, while inactive dots use bg-gray-600. The active dot updates automatically when cards are navigated via swipe gestures. Additionally, dots are fully interactive - clicking any dot triggers direct navigation to the corresponding card with smooth GSAP transitions.\n</info added on 2025-07-04T21:31:25.112Z>",
+            "status": "done",
+            "testStrategy": "Verify dots update correctly on swipe, test accessibility with screen readers, and ensure responsive sizing"
+          },
+          {
+            "id": 5,
+            "title": "Fine-tune Swipe Thresholds and User Experience",
+            "description": "Optimize the swipe interaction with proper thresholds, visual feedback, and edge case handling",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Implement minimum swipe distance threshold (e.g., 50px) to trigger card change. Add velocity threshold for quick flicks (e.g., 0.5px/ms). Create visual feedback during drag with slight rotation and opacity changes. Add haptic feedback on card change (if available). Implement rubber-band effect at first/last card using GSAP. Add keyboard navigation as fallback. Optimize for different screen sizes with responsive thresholds. Add touch-none utility class during animations to prevent interference.\n<info added on 2025-07-04T21:32:08.085Z>\nAfter implementing swipe gesture controls, adjusted swipe threshold from 50px to 30% of screen width for better responsiveness across devices. Velocity threshold remains at 0.5px/ms for quick flicks. Added bounce-back animation using GSAP's elastic.out easing when swipe distance is insufficient to trigger card change. Implemented edge detection logic that prevents swiping beyond the first and last cards - swipes at these boundaries trigger a subtle resistance animation. Applied cubic-bezier(0.25, 0.46, 0.45, 0.94) easing function to all card transitions for natural motion feel. Set touch-action: pan-y pinch-zoom on the swiper container to prevent horizontal browser gestures from interfering while allowing vertical scrolling and zoom.\n</info added on 2025-07-04T21:32:08.085Z>",
+            "status": "done",
+            "testStrategy": "User test swipe sensitivity across devices, verify thresholds feel natural, and test edge cases like rapid swiping"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Build Sliding Info Panel with GSAP Animations",
+        "description": "Create info panel that slides down from top containing event details, teams, rules, and contact info",
+        "details": "Build info panel using Tailwind's backdrop and overlay utilities with backdrop-blur effects. Implement slide-down animation from top using GSAP with smooth easing. Include event date, teams list, rules, and contact info with proper Tailwind typography. Add touch-friendly close button with hover/active states. Use fixed positioning and proper z-index management.",
+        "testStrategy": "Test panel slides smoothly from top, verify backdrop blur effects work correctly, validate touch interactions on close button, ensure content is readable and properly formatted",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Info Panel Component Structure",
+            "description": "Build the foundational React component for the info panel with proper HTML structure and Tailwind classes for styling",
+            "dependencies": [],
+            "details": "Create InfoPanel.jsx component with fixed positioning at top of viewport. Structure content sections for event details, teams, rules, and contact info using semantic HTML. Apply Tailwind classes for backdrop-blur-md, bg-white/90 (or dark variant), shadow-2xl, and proper spacing with p-6 or p-8. Set initial transform: translateY(-100%) to position panel off-screen.",
+            "status": "done",
+            "testStrategy": "Verify component renders with all required sections, proper CSS classes are applied, and panel is initially positioned off-screen"
+          },
+          {
+            "id": 2,
+            "title": "Implement GSAP Slide Animation Logic",
+            "description": "Set up GSAP animation timeline for smooth slide-down and slide-up animations with proper easing",
+            "dependencies": [
+              1
+            ],
+            "details": "Install GSAP if needed. Create useEffect hook with GSAP timeline for panel animation. Implement slideDown animation: gsap.to() with duration: 0.6, ease: 'power3.out', y: 0. Implement slideUp animation: gsap.to() with duration: 0.4, ease: 'power3.in', y: '-100%'. Add autoAlpha for smooth opacity transitions. Use useRef to target panel element.",
+            "status": "done",
+            "testStrategy": "Test animation triggers properly on mount/unmount, verify smooth easing, check performance on various devices"
+          },
+          {
+            "id": 3,
+            "title": "Design Content Layout with Tailwind Typography",
+            "description": "Style all content sections with consistent Tailwind typography and responsive layout",
+            "dependencies": [
+              1
+            ],
+            "details": "Apply Tailwind typography classes: text-3xl font-bold for main title, text-xl font-semibold for section headers, text-base for body content. Create grid or flex layout for teams display. Style rules as ordered list with list-decimal and proper spacing. Format contact info with appropriate text sizes and colors. Ensure responsive design with sm:, md:, lg: breakpoints.",
+            "status": "done",
+            "testStrategy": "Verify typography hierarchy is clear, content is readable on all screen sizes, spacing is consistent"
+          },
+          {
+            "id": 4,
+            "title": "Build Touch-Friendly Close Button",
+            "description": "Create an accessible close button with proper touch targets and visual feedback",
+            "dependencies": [
+              1
+            ],
+            "details": "Position close button using absolute top-4 right-4. Apply min touch target size of 44x44px using p-2 with 24x24 icon. Style with Tailwind: rounded-full, bg-gray-100 hover:bg-gray-200, transition-colors duration-200. Add active:scale-95 for press feedback. Implement onClick handler to trigger slideUp animation. Include aria-label='Close panel' for accessibility.",
+            "status": "done",
+            "testStrategy": "Test touch responsiveness on mobile devices, verify hover/active states work correctly, ensure accessibility with screen readers"
+          },
+          {
+            "id": 5,
+            "title": "Handle Z-Index and Animation State Management",
+            "description": "Properly manage z-index layering and component state for smooth open/close functionality",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Set z-index using Tailwind's z-50 class to ensure panel appears above other content. Create isOpen state with useState hook. Implement open/close methods that update state and trigger GSAP animations. Add overlay backdrop with fixed inset-0 bg-black/50 that also closes panel on click. Ensure panel unmounts after close animation completes using onComplete callback. Handle escape key press for keyboard accessibility.",
+            "status": "done",
+            "testStrategy": "Verify panel appears above all content, test open/close flow is smooth, ensure no z-index conflicts with other elements"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Add Countdown Timer with Tailwind Components",
+        "description": "Implement countdown timer showing time remaining until event with mobile-optimized display",
+        "details": "Create countdown timer using JavaScript Date API with Tailwind-styled components. Display days, hours, minutes, and seconds in separate styled containers using Tailwind's grid and spacing utilities. Add animated number transitions when values change. Include proper handling for countdown completion. Style with gradient backgrounds and glassmorphism effects consistent with overall design.",
+        "testStrategy": "Verify countdown accuracy, test number transitions are smooth, validate display on different screen sizes, confirm proper behavior when countdown reaches zero",
+        "priority": "medium",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Countdown Timer Data Model and Logic",
+            "description": "Implement the core JavaScript logic for calculating time differences between current time and target event date",
+            "dependencies": [],
+            "details": "Create a JavaScript module that accepts a target date/time, calculates the difference from current time, and returns an object with days, hours, minutes, and seconds. Include methods for starting/stopping the timer, updating calculations every second using setInterval, and handling edge cases like negative time differences. Export functions for initialization, updating, and cleanup.",
+            "status": "pending",
+            "testStrategy": "Unit test the time calculation functions with various date inputs, verify correct handling of timezone differences, test edge cases like past dates and countdown completion"
+          },
+          {
+            "id": 2,
+            "title": "Build Tailwind-Styled Timer Display Components",
+            "description": "Create the HTML structure and Tailwind CSS classes for displaying the countdown timer with individual containers for each time unit",
+            "dependencies": [],
+            "details": "Design a responsive grid layout using Tailwind's grid utilities (grid-cols-2 md:grid-cols-4) for days, hours, minutes, and seconds. Each unit should have its own container with consistent padding, rounded corners (rounded-lg), and shadow effects. Include labels below each number. Structure should support mobile-first design with proper spacing using gap utilities.",
+            "status": "pending",
+            "testStrategy": "Visual regression testing across different screen sizes, verify responsive breakpoints work correctly, ensure consistent spacing and alignment"
+          },
+          {
+            "id": 3,
+            "title": "Implement Glassmorphism and Gradient Styling",
+            "description": "Apply glassmorphism effects and gradient backgrounds to timer components using Tailwind utilities and custom CSS",
+            "dependencies": [
+              2
+            ],
+            "details": "Add backdrop-blur effects for glassmorphism using Tailwind's backdrop-blur-sm/md classes. Create gradient backgrounds using bg-gradient-to-br with color combinations that match the overall design theme. Apply semi-transparent backgrounds (bg-white/10 or bg-black/10) for the glass effect. Add subtle borders (border border-white/20) to enhance the glass appearance. Ensure proper contrast for readability.",
+            "status": "pending",
+            "testStrategy": "Cross-browser testing for backdrop-filter support, verify visual consistency across different backgrounds, test color contrast ratios for accessibility"
+          },
+          {
+            "id": 4,
+            "title": "Add Number Change Animations",
+            "description": "Implement smooth transitions and animations when countdown numbers change using CSS transitions and JavaScript",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Use Tailwind's transition utilities (transition-all duration-300) for smooth number changes. Implement a flip animation or fade effect when digits update by toggling classes with JavaScript. Consider using transform utilities for scale or rotate effects during transitions. Add will-change-transform for performance optimization. Ensure animations don't cause layout shifts.",
+            "status": "pending",
+            "testStrategy": "Performance testing to ensure smooth 60fps animations, verify no memory leaks from continuous animations, test on low-end devices"
+          },
+          {
+            "id": 5,
+            "title": "Handle Countdown Completion and Edge Cases",
+            "description": "Implement behavior for when the countdown reaches zero and handle various edge cases gracefully",
+            "dependencies": [
+              1,
+              4
+            ],
+            "details": "Create a completion state that displays a message or triggers an event when countdown reaches 00:00:00:00. Clear the interval timer to prevent negative values. Add error handling for invalid dates or network time sync issues. Include options for what happens after completion (hide timer, show message, trigger callback). Ensure the timer can be reinitialized with a new target date if needed.",
+            "status": "pending",
+            "testStrategy": "Test countdown completion behavior by setting near-future target times, verify memory cleanup after completion, test reinitialization scenarios"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Implement Haptic Feedback and Mobile Optimizations",
+        "description": "Add vibration API haptic feedback on interactions and mobile-specific optimizations",
+        "details": "Implement Vibration API for haptic feedback on card swipes, button taps, and other interactions. Add feature detection for vibration support. Optimize touch targets for mobile (minimum 44px), implement proper touch event handling, add touch-action CSS properties. Include pull-to-refresh gesture for resetting experience using touch events and visual feedback.",
+        "testStrategy": "Test haptic feedback on devices that support it, verify touch targets are appropriately sized, validate pull-to-refresh functionality, ensure no conflicts with browser default gestures",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set Up Vibration API with Feature Detection",
+            "description": "Implement core vibration functionality with proper browser feature detection and fallback handling",
+            "dependencies": [],
+            "details": "Create a vibration utility module that checks for navigator.vibrate support. Implement different vibration patterns for various interactions (short tap: 10ms, swipe: 20ms, success: [50, 30, 50]). Add a settings toggle to enable/disable haptic feedback. Store user preference in localStorage.",
+            "status": "pending",
+            "testStrategy": "Mock navigator.vibrate API in tests. Verify feature detection works correctly. Test different vibration patterns and ensure graceful degradation on unsupported devices."
+          },
+          {
+            "id": 2,
+            "title": "Integrate Haptic Feedback for Card Interactions",
+            "description": "Add vibration triggers to all card swipe gestures and related animations",
+            "dependencies": [
+              1
+            ],
+            "details": "Trigger haptic feedback on: card swipe start (light vibration), card swipe threshold reached (medium vibration), card placement success/failure (distinct patterns). Implement debouncing to prevent excessive vibrations during rapid interactions. Add visual indicators when haptic feedback is triggered for accessibility.",
+            "status": "pending",
+            "testStrategy": "Test vibration triggers for all card interaction types. Verify debouncing prevents vibration spam. Ensure visual feedback accompanies haptic feedback."
+          },
+          {
+            "id": 3,
+            "title": "Optimize Touch Targets and Interaction Areas",
+            "description": "Ensure all interactive elements meet mobile accessibility guidelines with proper sizing and spacing",
+            "dependencies": [],
+            "details": "Audit all buttons, cards, and interactive elements to ensure minimum 44x44px touch targets. Add appropriate padding without changing visual appearance using pseudo-elements or transparent borders. Implement proper touch-action CSS properties (manipulation for scrollable areas, none for gesture areas). Add -webkit-tap-highlight-color for better visual feedback.",
+            "status": "pending",
+            "testStrategy": "Use automated testing to verify all interactive elements meet 44px minimum. Test on various mobile devices and screen sizes. Verify touch targets don't overlap."
+          },
+          {
+            "id": 4,
+            "title": "Implement Touch Event Handling and Gestures",
+            "description": "Add comprehensive touch event support for mobile-specific interactions and gestures",
+            "dependencies": [
+              3
+            ],
+            "details": "Replace or supplement mouse events with touch equivalents (touchstart, touchmove, touchend). Implement proper touch event handling with preventDefault() where needed. Add support for multi-touch gestures if applicable. Handle touch event cancellation gracefully. Implement velocity-based swipe detection for more natural card interactions.",
+            "status": "pending",
+            "testStrategy": "Test all interactions work with both touch and mouse events. Verify no double-firing of events. Test gesture recognition accuracy and responsiveness."
+          },
+          {
+            "id": 5,
+            "title": "Add Pull-to-Refresh Gesture for Experience Reset",
+            "description": "Implement a mobile-friendly pull-to-refresh mechanism to reset the entire experience",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Create pull-to-refresh functionality with: threshold detection (e.g., 80px pull distance), visual feedback indicator (spinning icon or progress bar), elastic animation during pull, haptic feedback at threshold and on release. Prevent accidental triggers with dead zone at top. Show confirmation before resetting. Animate cards back to deck position on refresh.",
+            "status": "pending",
+            "testStrategy": "Test pull gesture recognition and threshold accuracy. Verify visual feedback appears correctly. Test reset functionality restores initial state. Ensure gesture doesn't interfere with normal scrolling."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Create Special Animations and Effects",
+        "description": "Implement confetti animation for final task, stagger animations on load, and easter egg features",
+        "details": "Create confetti animation using GSAP when viewing final task card with particle system or canvas-based animation. Implement stagger animations for UI elements on page load using GSAP timeline. Add easter egg animation when all cards are viewed using localStorage to track progress. Include celebration effects with sound (optional) and visual feedback.",
+        "testStrategy": "Test confetti animation performance on mobile devices, verify stagger animations don't cause lag, validate easter egg triggers correctly, confirm localStorage tracking works properly",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up GSAP library and create confetti particle system",
+            "description": "Install GSAP library and create a reusable confetti animation component with customizable particle physics",
+            "dependencies": [],
+            "details": "Install GSAP via npm/yarn. Create a ConfettiAnimation class that generates multiple particle elements with random colors, sizes, and trajectories. Use GSAP's physics2D plugin for realistic falling motion with gravity and wind effects. Implement particle pooling for performance optimization.",
+            "status": "pending",
+            "testStrategy": "Create unit tests for particle generation logic and visual regression tests for animation appearance"
+          },
+          {
+            "id": 2,
+            "title": "Implement stagger animations for UI elements on page load",
+            "description": "Create GSAP timeline animations that stagger the appearance of UI elements when the page loads",
+            "dependencies": [
+              1
+            ],
+            "details": "Build a StaggerAnimations utility that uses GSAP timelines to animate opacity, scale, and position of cards and UI elements. Implement progressive reveal with customizable delays and easing functions. Add intersection observer for viewport-based triggering of animations.",
+            "status": "pending",
+            "testStrategy": "Test animation timing and sequencing, verify animations work across different viewport sizes"
+          },
+          {
+            "id": 3,
+            "title": "Create progress tracking system with localStorage",
+            "description": "Implement a system to track which task cards have been viewed and store progress in localStorage",
+            "dependencies": [],
+            "details": "Create a ProgressTracker class that maintains a Set of viewed card IDs in localStorage. Implement methods to mark cards as viewed, check completion status, and clear progress. Add event listeners to detect when cards are clicked or expanded. Include data persistence and recovery logic.",
+            "status": "pending",
+            "testStrategy": "Test localStorage operations, verify progress persists across sessions, test edge cases like storage quota exceeded"
+          },
+          {
+            "id": 4,
+            "title": "Build easter egg animation trigger and effects",
+            "description": "Create the easter egg animation that triggers when all cards have been viewed",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Implement an EasterEggManager that monitors progress and triggers celebration effects when all cards are viewed. Create a combination animation using GSAP that includes screen flash, rotating elements, and cascading effects. Add subtle UI changes like special borders or badges for completed sections.",
+            "status": "pending",
+            "testStrategy": "Test trigger conditions, verify animation doesn't interfere with UI functionality, test reset behavior"
+          },
+          {
+            "id": 5,
+            "title": "Add celebration sound effects and accessibility features",
+            "description": "Implement optional sound effects for animations and ensure all effects are accessible",
+            "dependencies": [
+              4
+            ],
+            "details": "Create an AudioManager class for playing celebration sounds with volume controls and mute options. Add prefers-reduced-motion media query support to disable or simplify animations. Implement ARIA live regions to announce completion events to screen readers. Add settings toggle for users to enable/disable effects.",
+            "status": "pending",
+            "testStrategy": "Test audio playback across browsers, verify accessibility with screen readers, test reduced motion preferences"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Add Mobile Share Functionality",
+        "description": "Implement native mobile sharing capabilities optimized for the treasure hunt experience",
+        "details": "Implement Web Share API for native mobile sharing with fallback to custom share options. Create share button with Tailwind styling that opens native share sheet. Include proper metadata for sharing (title, description, URL). Add share functionality for individual tasks and overall experience. Handle different mobile platforms (iOS/Android) appropriately.",
+        "testStrategy": "Test native share functionality on iOS and Android devices, verify fallback options work correctly, validate shared content appears properly, confirm share button is accessible and visible",
+        "priority": "low",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Web Share API Core Functionality",
+            "description": "Create a React hook that implements the Web Share API with proper feature detection and error handling",
+            "dependencies": [],
+            "details": "Build useWebShare hook that checks navigator.share availability, handles share data (title, text, url), manages async share operations with try/catch, and returns share function and availability status. Include TypeScript types for share data.",
+            "status": "pending",
+            "testStrategy": "Unit test the hook with mocked navigator.share, test feature detection on supported/unsupported browsers, verify error handling for user cancellation and API failures"
+          },
+          {
+            "id": 2,
+            "title": "Create Share Button Component with Tailwind Styling",
+            "description": "Design and implement a reusable ShareButton component with mobile-optimized styling and loading states",
+            "dependencies": [
+              1
+            ],
+            "details": "Create ShareButton component that uses the useWebShare hook, includes share icon (using lucide-react or similar), implements Tailwind classes for touch-friendly sizing (min 44px tap target), adds loading/disabled states, and accepts customizable share data props.",
+            "status": "pending",
+            "testStrategy": "Component tests for rendering states, accessibility testing for button labeling, visual regression tests for different button states"
+          },
+          {
+            "id": 3,
+            "title": "Build Custom Fallback Share Modal",
+            "description": "Implement a fallback share modal for browsers without Web Share API support, featuring common share options",
+            "dependencies": [
+              2
+            ],
+            "details": "Create ShareModal component with options for copying link to clipboard, sharing via WhatsApp/Facebook/Twitter using URL schemes, email sharing with mailto links. Use Tailwind for responsive modal design with backdrop and animations. Include success notifications for clipboard copy.",
+            "status": "pending",
+            "testStrategy": "Test modal open/close functionality, verify each share option generates correct URLs, test clipboard functionality with permissions API"
+          },
+          {
+            "id": 4,
+            "title": "Add Share Metadata and Platform-Specific Handling",
+            "description": "Implement proper share metadata generation and handle platform-specific behaviors for iOS and Android",
+            "dependencies": [
+              3
+            ],
+            "details": "Create utility functions to generate share metadata based on context (individual task vs overall experience), detect iOS/Android using user agent for platform-specific adjustments, handle share URL construction with proper deep linking support, ensure proper Open Graph tags are set for shared content.",
+            "status": "pending",
+            "testStrategy": "Test metadata generation for different content types, verify platform detection accuracy, test share previews on various social platforms"
+          },
+          {
+            "id": 5,
+            "title": "Integrate Share Functionality Throughout Application",
+            "description": "Add share buttons to individual task cards and create a main share option for the overall treasure hunt experience",
+            "dependencies": [
+              4
+            ],
+            "details": "Add ShareButton to task completion screens with task-specific metadata, implement main share button in app header or completion screen for sharing entire experience, ensure proper analytics tracking for share events, add share count tracking if needed for gamification.",
+            "status": "pending",
+            "testStrategy": "Integration tests for share functionality in different app contexts, E2E tests for complete share flow on mobile devices, analytics verification for share event tracking"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Final Testing and Mobile Performance Optimization",
+        "description": "Comprehensive testing across mobile devices and performance optimization for smooth experience",
+        "details": "Conduct thorough testing on various mobile devices and browsers. Optimize GSAP animations for performance, minimize JavaScript execution time, optimize image loading. Test touch interactions, gesture conflicts, and overall user experience flow. Validate all Tailwind classes are properly applied and custom CSS is minimal. Ensure 100vh viewport handling works correctly on all mobile browsers including Safari.",
+        "testStrategy": "Test on minimum 5 different mobile devices, validate performance metrics (load time, animation smoothness), verify all interactions work correctly, confirm no memory leaks or performance degradation over time",
+        "priority": "high",
+        "dependencies": [
+          7,
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Mobile Device Testing Setup and Cross-Browser Compatibility",
+            "description": "Set up comprehensive testing environment for various mobile devices and browsers, focusing on viewport handling and browser-specific quirks",
+            "dependencies": [],
+            "details": "Configure BrowserStack or similar service for testing across iOS Safari, Chrome Mobile, Firefox Mobile, and Samsung Internet. Create a testing matrix covering different screen sizes (320px to 428px width). Implement viewport meta tag optimizations and test 100vh handling with CSS custom properties fallback for Safari. Document all browser-specific issues found.",
+            "status": "pending",
+            "testStrategy": "Create automated test suite using Playwright or Cypress for mobile viewports. Manual testing on physical devices for touch interactions and viewport behavior."
+          },
+          {
+            "id": 2,
+            "title": "GSAP Animation Performance Optimization",
+            "description": "Analyze and optimize all GSAP animations for smooth 60fps performance on mobile devices",
+            "dependencies": [],
+            "details": "Use Chrome DevTools Performance tab to identify animation bottlenecks. Implement will-change CSS property for animated elements. Convert complex animations to use transform and opacity only. Add GPU acceleration with transform3d. Implement reduced motion media query support. Use GSAP's built-in performance features like force3D and lazy rendering.",
+            "status": "pending",
+            "testStrategy": "Measure frame rates during animations on low-end devices. Use Performance Observer API to track long tasks. Set performance budgets for animation execution time."
+          },
+          {
+            "id": 3,
+            "title": "Touch Interaction and Gesture Optimization",
+            "description": "Implement and test all touch interactions, preventing gesture conflicts and ensuring smooth user experience",
+            "dependencies": [
+              1
+            ],
+            "details": "Add touch-action CSS properties to prevent unwanted browser gestures. Implement passive event listeners for scroll performance. Test and fix any conflicts between swipe gestures and scroll. Ensure tap targets meet 44x44px minimum size. Add appropriate hover state fallbacks for touch devices. Implement fastclick behavior or use touch-action: manipulation.",
+            "status": "pending",
+            "testStrategy": "Manual testing of all interactive elements on touch devices. Automated gesture testing using Appium or similar tools. User testing sessions to identify UX issues."
+          },
+          {
+            "id": 4,
+            "title": "JavaScript Bundle Optimization and Code Splitting",
+            "description": "Minimize JavaScript execution time through bundle optimization and strategic code splitting",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement dynamic imports for non-critical features. Use tree shaking to remove unused code. Minimize main thread blocking with web workers for heavy computations. Defer non-critical JavaScript loading. Implement intersection observer for lazy-loading components. Optimize Tailwind CSS with PurgeCSS. Minify and compress all assets.",
+            "status": "pending",
+            "testStrategy": "Measure Time to Interactive (TTI) and First Input Delay (FID) metrics. Use Lighthouse CI for performance regression testing. Monitor bundle sizes with webpack-bundle-analyzer."
+          },
+          {
+            "id": 5,
+            "title": "Image Loading Optimization and Final Performance Validation",
+            "description": "Optimize all images for mobile performance and conduct final comprehensive performance validation",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Implement responsive images with srcset and sizes attributes. Convert images to WebP with JPEG/PNG fallbacks. Add lazy loading with native loading='lazy' attribute. Implement blur-up placeholder technique for hero images. Use intersection observer for below-fold images. Validate all Tailwind utilities are properly purged. Ensure critical CSS is inlined. Run final performance audits and create performance budget documentation.",
+            "status": "pending",
+            "testStrategy": "Use Lighthouse for comprehensive performance scoring. Test on 3G network throttling. Measure Core Web Vitals (LCP, FID, CLS) across all pages. A/B test loading strategies."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-04T20:43:24.515Z",
+      "updated": "2025-07-04T21:36:37.497Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
