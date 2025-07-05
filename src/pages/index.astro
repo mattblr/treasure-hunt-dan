@@ -60,7 +60,10 @@ const tasks = [
 	</button>
 	
 	<!-- Hero Section -->
-	<section class="hero-section relative w-full h-[400dvh] bg-black">
+	<section 
+		class="hero-section relative w-full bg-black"
+		style={`height: ${/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? '400dvh' : '100dvh'}`}
+	>
 		<!-- Video Background -->
 		<div class="hero-video-wrapper sticky top-0 w-full h-screen overflow-hidden">
 			<div class="hero-video-container absolute inset-0 w-full h-full">
@@ -279,11 +282,10 @@ const tasks = [
 	body.ios-device .task-section {
 		scroll-snap-align: start;
 	}
-	
 	/* CSS-only parallax for iOS using fixed positioning */
 	@media (max-width: 768px) and (-webkit-touch-callout: none) {
 		.hero-section {
-			height: 100vh;
+			height: 100dvh;
 			overflow: hidden;
 		}
 		
@@ -292,13 +294,13 @@ const tasks = [
 			top: 0;
 			left: 0;
 			right: 0;
-			height: 100vh;
+			height: 100dvh;
 		}
 		
 		.hero-content {
 			position: relative;
 			z-index: 10;
-			min-height: 100vh;
+			min-height: 100dvh;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -306,7 +308,7 @@ const tasks = [
 		
 		.task-section {
 			position: relative;
-			margin-top: 100vh;
+			margin-top: 100dvh;
 			background: #000;
 			z-index: 20;
 		}
