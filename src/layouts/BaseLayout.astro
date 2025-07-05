@@ -44,46 +44,6 @@ const { title, description = "Danny's Mobile Task Manager" } = Astro.props;
   <body>
     <slot />
     
-    <!-- Mobile-only detection script -->
-    <script>
-      // Check if user is on desktop and redirect if necessary
-      (function() {
-        // Skip redirect on desktop-notice page
-        if (window.location.pathname === '/desktop-notice') {
-          return;
-        }
-        
-        // Check if device is mobile based on viewport width and touch capability
-        const isMobile = () => {
-          const viewportWidth = window.innerWidth;
-          const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-          const userAgent = navigator.userAgent.toLowerCase();
-          
-          // Check for mobile user agents
-          const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-          const isMobileUserAgent = mobileRegex.test(userAgent);
-          
-          // Consider it mobile if viewport is <= 430px OR has touch AND mobile user agent
-          return viewportWidth <= 430 || (hasTouch && isMobileUserAgent);
-        };
-        
-        // Redirect desktop users
-        if (!isMobile()) {
-          window.location.href = '/desktop-notice';
-        }
-        
-        // Also check on resize
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(function() {
-            if (!isMobile() && window.location.pathname !== '/desktop-notice') {
-              window.location.href = '/desktop-notice';
-            }
-          }, 250);
-        });
-      })();
-    </script>
   </body>
 </html>
 

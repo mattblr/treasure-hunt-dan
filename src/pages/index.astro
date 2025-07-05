@@ -177,10 +177,41 @@ const tasks = [
 	/* Video container styles */
 	.hero-video-container {
 		z-index: 0;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
 	}
 	
 	.task-video {
 		filter: brightness(0.5);
+	}
+	
+	/* Safari-specific fixes */
+	@supports (-webkit-touch-callout: none) {
+		/* Safari only styles */
+		.hero-section {
+			-webkit-transform: translate3d(0,0,0);
+			transform: translate3d(0,0,0);
+		}
+		
+		.hero-video-wrapper {
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			-webkit-perspective: 1000;
+			perspective: 1000;
+		}
+		
+		.hero-title,
+		.hero-countdown,
+		.hero-text {
+			-webkit-transform: translateZ(0);
+			transform: translateZ(0);
+			will-change: transform, opacity;
+		}
+		
+		.video-swiper-container {
+			-webkit-transform: translateZ(0);
+			transform: translateZ(0);
+		}
 	}
 	
 	/* Swipe container styles */
@@ -191,6 +222,8 @@ const tasks = [
 	.video-slide {
 		will-change: transform;
 		transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
 	}
 	
 	.video-slide.dragging {
@@ -246,11 +279,6 @@ const tasks = [
 				duration: 1.5,
 				ease: 'power3.out'
 			}, '-=0.5')
-			.from('.hero-title', {
-				letterSpacing: '50px',
-				duration: 1.5,
-				ease: 'power2.out'
-			}, '-=1.5')
 			.fromTo('.hero-countdown', 
 				{
 					opacity: 0,
@@ -283,6 +311,12 @@ const tasks = [
 	
 	// Start background animations
 	function startBackgroundAnimations() {
+		// Ensure ScrollTrigger is available
+		if (typeof ScrollTrigger === 'undefined') {
+			console.error('ScrollTrigger not loaded');
+			return;
+		}
+		
 		// Initialize parallax scrolling for hero
 		initHeroParallax();
 		
@@ -298,17 +332,23 @@ const tasks = [
 	
 	// Initialize hero parallax scrolling
 	function initHeroParallax() {
+		// Force ScrollTrigger to refresh on Safari
+		ScrollTrigger.config({
+			ignoreMobileResize: true,
+			autoRefreshEvents: "visibilitychange,DOMContentLoaded,load"
+		});
+		
 		// Hero title parallax - moves up and fades out first
 		gsap.to('.hero-title', {
-			yPercent: -100,
-			letterSpacing: '100px',
+			y: -200,
 			opacity: 0,
 			ease: 'none',
 			scrollTrigger: {
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '40% top',
-				scrub: 1
+				scrub: 1,
+				invalidateOnRefresh: true
 			}
 		});
 		
@@ -321,11 +361,12 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '30% top',
-				scrub: 1
+				scrub: 1,
+				invalidateOnRefresh: true
 			}
 		});
 
-			gsap.to('.hero-text', {
+		gsap.to('.hero-text', {
 			opacity: 0,
 			y: -50,
 			ease: 'none',
@@ -333,7 +374,8 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '30% top',
-				scrub: 1
+				scrub: 1,
+				invalidateOnRefresh: true
 			}
 		});
 		
@@ -345,7 +387,8 @@ const tasks = [
 				trigger: '.hero-section',
 				start: '40% top',
 				end: '70% top',
-				scrub: 1
+				scrub: 1,
+				invalidateOnRefresh: true
 			}
 		});
 		
@@ -357,7 +400,8 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '20% top',
-				scrub: true
+				scrub: 1,
+				invalidateOnRefresh: true
 			}
 		});
 		
@@ -373,10 +417,19 @@ const tasks = [
 					trigger: '.hero-section',
 					start: '70% top',
 					end: 'bottom top',
-					scrub: 1
+					scrub: 1,
+					invalidateOnRefresh: true
 				}
 			}
 		);
+		
+		// Safari-specific refresh
+		if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+			// Delay refresh for Safari
+			setTimeout(() => {
+				ScrollTrigger.refresh();
+			}, 100);
+		}
 	}
 	
 	// Initialize video swiper functionality
