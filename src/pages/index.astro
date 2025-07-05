@@ -214,6 +214,27 @@ const tasks = [
 		}
 	}
 	
+	/* iOS specific fixes */
+	@supports (-webkit-overflow-scrolling: touch) {
+		.hero-section {
+			position: relative;
+			-webkit-overflow-scrolling: touch;
+		}
+		
+		.hero-video-wrapper {
+			position: -webkit-sticky;
+			position: sticky;
+		}
+		
+		/* Disable will-change on iOS for better performance */
+		.hero-title,
+		.hero-countdown,
+		.hero-text,
+		.hero-video-container {
+			will-change: auto;
+		}
+	}
+	
 	/* Swipe container styles */
 	.video-swiper-container {
 		touch-action: pan-y pinch-zoom;
@@ -242,6 +263,53 @@ const tasks = [
 	.task-description,
 	.task-action {
 		opacity: 0;
+	}
+	
+	/* iOS-specific CSS animations as fallback */
+	body.ios-device .hero-section {
+		scroll-snap-type: y mandatory;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+	
+	body.ios-device .hero-video-wrapper {
+		scroll-snap-align: start;
+	}
+	
+	body.ios-device .task-section {
+		scroll-snap-align: start;
+	}
+	
+	/* CSS-only parallax for iOS using fixed positioning */
+	@media (max-width: 768px) and (-webkit-touch-callout: none) {
+		.hero-section {
+			height: 100vh;
+			overflow: hidden;
+		}
+		
+		.hero-video-wrapper {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 100vh;
+		}
+		
+		.hero-content {
+			position: relative;
+			z-index: 10;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.task-section {
+			position: relative;
+			margin-top: 100vh;
+			background: #000;
+			z-index: 20;
+		}
 	}
 </style>
 
@@ -332,6 +400,24 @@ const tasks = [
 	
 	// Initialize hero parallax scrolling
 	function initHeroParallax() {
+		// Detect iOS specifically
+		const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+		const isMobileSafari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent) && isIOS;
+		
+		console.log('Device detection:', {
+			isIOS,
+			isMobileSafari,
+			userAgent: navigator.userAgent,
+			screenHeight: window.innerHeight,
+			documentHeight: document.documentElement.scrollHeight
+		});
+		
+		if (isIOS) {
+			// Use simplified animations for iOS
+			initIOSParallax();
+			return;
+		}
+		
 		// Force ScrollTrigger to refresh on Safari
 		ScrollTrigger.config({
 			ignoreMobileResize: true,
@@ -347,8 +433,8 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '40% top',
-				scrub: 1,
-				invalidateOnRefresh: true
+				scrub: 0.5,
+				invalidateOnRefresh: true,
 			}
 		});
 		
@@ -361,7 +447,7 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '30% top',
-				scrub: 1,
+				scrub: 0.5,
 				invalidateOnRefresh: true
 			}
 		});
@@ -374,7 +460,7 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '30% top',
-				scrub: 1,
+				scrub: 0.5,
 				invalidateOnRefresh: true
 			}
 		});
@@ -387,7 +473,7 @@ const tasks = [
 				trigger: '.hero-section',
 				start: '40% top',
 				end: '70% top',
-				scrub: 1,
+				scrub: 0.5,
 				invalidateOnRefresh: true
 			}
 		});
@@ -400,7 +486,7 @@ const tasks = [
 				trigger: '.hero-section',
 				start: 'top top',
 				end: '20% top',
-				scrub: 1,
+				scrub: 0.5,
 				invalidateOnRefresh: true
 			}
 		});
@@ -417,19 +503,95 @@ const tasks = [
 					trigger: '.hero-section',
 					start: '70% top',
 					end: 'bottom top',
-					scrub: 1,
+					scrub: 0.5,
 					invalidateOnRefresh: true
 				}
 			}
 		);
 		
-		// Safari-specific refresh
 		if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
 			// Delay refresh for Safari
 			setTimeout(() => {
 				ScrollTrigger.refresh();
 			}, 100);
 		}
+	}
+	
+	// iOS-specific parallax implementation
+	function initIOSParallax() {
+		console.log('Using iOS-specific parallax implementation');
+		
+		// Get elements
+		const heroSection = document.querySelector('.hero-section');
+		const heroTitle = document.querySelector('.hero-title');
+		const heroCountdown = document.querySelector('.hero-countdown');
+		const heroText = document.querySelector('.hero-text');
+		const heroVideoContainer = document.querySelector('.hero-video-container');
+		const scrollIndicator = document.querySelector('.scroll-indicator');
+		const videoSwiperContainer = document.querySelector('.video-swiper-container');
+		
+		if (!heroSection) return;
+		
+		// Use Intersection Observer for iOS
+		const observerOptions = {
+			root: null,
+			rootMargin: '0px',
+			threshold: Array.from({length: 101}, (_, i) => i / 100)
+		};
+		
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.target === heroSection) {
+					const scrollProgress = 1 - entry.intersectionRatio;
+					
+					// Simplified transforms without GSAP
+					if (heroTitle) {
+						heroTitle.style.opacity = `${1 - scrollProgress * 2}`;
+						heroTitle.style.transform = `translateY(${-scrollProgress * 200}px)`;
+					}
+					
+					if (heroCountdown) {
+						heroCountdown.style.opacity = `${1 - scrollProgress * 3}`;
+						heroCountdown.style.transform = `translateY(${scrollProgress * 50}px)`;
+					}
+					
+					if (heroText) {
+						heroText.style.opacity = `${1 - scrollProgress * 3}`;
+						heroText.style.transform = `translateY(${-scrollProgress * 50}px)`;
+					}
+					
+					if (heroVideoContainer) {
+						heroVideoContainer.style.opacity = `${1 - Math.max(0, (scrollProgress - 0.4) * 2.5)}`;
+					}
+					
+					if (scrollIndicator) {
+						scrollIndicator.style.opacity = `${1 - scrollProgress * 5}`;
+					}
+					
+					if (videoSwiperContainer) {
+						videoSwiperContainer.style.opacity = `${Math.max(0, (scrollProgress - 0.7) * 3.33)}`;
+					}
+				}
+			});
+		}, observerOptions);
+		
+		// Observe the hero section
+		observer.observe(heroSection);
+		
+		// Add smooth transitions
+		const elementsToTransition = [
+			heroTitle, heroCountdown, heroText, 
+			heroVideoContainer, scrollIndicator, videoSwiperContainer
+		];
+		
+		elementsToTransition.forEach(el => {
+			if (el) {
+				el.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+			}
+		});
+		
+		// Add CSS class for iOS-specific styling
+		document.body.classList.add('ios-device');
 	}
 	
 	// Initialize video swiper functionality
